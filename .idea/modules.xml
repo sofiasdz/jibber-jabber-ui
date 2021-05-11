@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/jibber-jabbber-ui.iml" filepath="$PROJECT_DIR$/.idea/jibber-jabbber-ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../jibber-jabber-ui/.idea/jibber-jabber-ui.iml" filepath="$PROJECT_DIR$/../jibber-jabber-ui/.idea/jibber-jabber-ui.iml" />
     </modules>
   </component>
 </project>
