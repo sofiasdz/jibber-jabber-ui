@@ -7,6 +7,7 @@ import Card from "@material-ui/core/Card";
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
+import {getAllPosts} from "../../Api/PostApi";
 
 
 class Posts extends React.Component {
@@ -40,7 +41,7 @@ class Posts extends React.Component {
     }
 
     getPosts = () => {
-       // getTopicPosts(this.props.match.params.id, this.state.currentPage, 3).then(res => this.setState({posts: res.posts, totalPages: res.totalPages}))
+        getAllPosts().then(res => this.setState({posts: res.posts}))
     }
 
     private handleCancel() {
