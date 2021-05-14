@@ -2,15 +2,24 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom';
 import Box from '@material-ui/core/Box';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import SimpleCard from "./PostCard";
+import Card from "@material-ui/core/Card";
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
 
-export type State = {
-    posts: [1,2,3,4],
 
-}
-class Posts extends Component<State, any>{
+class Posts extends React.Component {
+
+    state = {
+        posts: [1,2,3,3],
+
+    }
+    constructor(props: {} | Readonly<{}>) {
+        super(props);
+
+    }
+
 
     handleSubmitPost = (title: string, description: string, link: string) => {
       /*  let topic = this.props.location.state.topic;
@@ -46,11 +55,20 @@ class Posts extends Component<State, any>{
             <React.Fragment>
                 <CssBaseline />
                 <Container maxWidth="sm">
-                    <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />
                     {
                         this.state.posts.length !== 0 ?
                             this.state.posts.map(() => (
-                    <SimpleCard></SimpleCard>
+                               < Card >
+                            <CardContent>
+                            <Typography variant="h5" component="h2">
+                        Author: Sofi
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                        Post text ahahsadakljdlkad
+                        </Typography>
+                        </CardContent>
+                        </Card>
+
                             )) :
                             <span className={'empty-message'}>This topic has no posts yet!</span>
                     }
