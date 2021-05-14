@@ -7,6 +7,7 @@ import Container from '@material-ui/core/Container';
 import SimpleCard from "./PostCard";
 
 export type State = {
+    posts: [1,2,3,4],
 
 }
 class Posts extends Component<State, any>{
@@ -25,6 +26,14 @@ class Posts extends Component<State, any>{
             })*/
     }
 
+    componentDidMount() {
+        this.getPosts()
+    }
+
+    getPosts = () => {
+       // getTopicPosts(this.props.match.params.id, this.state.currentPage, 3).then(res => this.setState({posts: res.posts, totalPages: res.totalPages}))
+    }
+
     private handleCancel() {
         /*let topic = this.props.location.state.topic;
         this.props.history.push('/main/topic/' + topic.id, {topic: topic});*/
@@ -38,7 +47,13 @@ class Posts extends Component<State, any>{
                 <CssBaseline />
                 <Container maxWidth="sm">
                     <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />
+                    {
+                        this.state.posts.length !== 0 ?
+                            this.state.posts.map(() => (
                     <SimpleCard></SimpleCard>
+                            )) :
+                            <span className={'empty-message'}>This topic has no posts yet!</span>
+                    }
                 </Container>
             </React.Fragment>
         </Box>

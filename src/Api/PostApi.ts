@@ -1,6 +1,6 @@
-import {API_BASE_URL} from '../constants/constants'
-import {request} from './APIUtils'
-import {PostType} from "../components/types/types";
+import {API_BASE_URL} from '../Constants/Constants'
+import {request} from './API'
+import {PostType} from "../components/Types/Types";
 
 export function createPost(title: string, description: string, link: string, topicId: number, role:string): Promise<PostType[]> {
     return request({
