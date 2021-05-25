@@ -2,12 +2,13 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Button from '@material-ui/core/Button';
-import Posts from "./components/Posts/Posts";
+import Home from "./components/Home/Home";
+import UserProfile from "./components/UserProfile/UserProfile"
 
 function App() {
   return (
     <div className="App">
-    <Posts ></Posts>
+    <UserProfile></UserProfile>
     </div>
   );
 }
