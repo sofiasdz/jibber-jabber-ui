@@ -21,7 +21,7 @@ export function getPostData(postId: number): Promise<any> {
 
 export function getAllPosts(): Promise<any> {
     return request({
-        url: API_BASE_URL + "/posts",
+        url:"/posts",
         method: 'GET',
         headers: {'Content-Type': 'application/json'}
     });
