@@ -2,7 +2,6 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
@@ -17,20 +16,6 @@ export type State = {
     username:string,
     password:string,
 }
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
-    title: {
-        fontSize: 40,
-    },
-}));
-
-
 
 class Login extends Component<Props, State>{
 
@@ -76,7 +61,7 @@ render() {
          .catch((err) => {
              if (err.status === 401|| err.status===404)
                  this.setState({successMessage: '', errorMessage: 'Invalid Credentials'});
-             else this.setState({successMessage: '', errorMessage: 'An error occurred logging into Trendz!'});
+             else this.setState({successMessage: '', errorMessage: 'An error occurred logging into Jibber Jabber!'});
          })
     }
 }
