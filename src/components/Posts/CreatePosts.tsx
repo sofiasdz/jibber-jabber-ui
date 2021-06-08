@@ -12,34 +12,43 @@ import {createPost} from "../../Api/PostApi";
 
 function CreatePost(){
     const [body, setBody] = useState("Your post here..");
+    let isLoggedIn=true
 
 
 
 
 
     return (
-        <Card >
+
+        <Card>
             <CardContent>
-                <Typography  color="textSecondary" gutterBottom>
+
+                <Typography color="textSecondary" gutterBottom>
                     Create Post
                 </Typography>
-                <form  noValidate autoComplete="off">
+                <form noValidate autoComplete="off">
                     <div>
-                        <TextField required id="standard-required" label="Required"  multiline={true} value={body} onChange={e => setBody(e.target.value)} />
-                        <Button variant="contained" color="primary" onClick={()=>handleCreatePosts('223','sofi',body)}>
+                        <TextField required id="standard-required" label="Required" multiline={true} value={body}
+                                   onChange={e => setBody(e.target.value)}/>
+                        { isLoggedIn &&
+                            <Button variant="contained" color="primary"
+                                onClick={() => handleCreatePosts(localStorage.getItem("authorId"), localStorage.getItem("author"), body)}>
                             Create Post
-                        </Button>
+                                local storage no esta guardando nada
+                        </Button>}
                     </div>
 
                 </form>
+
             </CardContent>
         </Card>
+
     );
 
 
 
 
-    function  handleCreatePosts(authorId:string,author:string,body:string) {
+    function handleCreatePosts(authorId: string | null, author: string | null, body: string) {
         createPost(authorId,author,body)
             .then((res) => {
                 console.log(res)

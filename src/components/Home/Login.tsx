@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
-import {loginUser} from "../../Api/UserApi";
+import {getCurrentUser, loginUser} from "../../Api/UserApi";
 
 export type Props = RouteComponentProps<any> & {}
 
@@ -20,17 +20,6 @@ export type State = {
 
 }
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
-    title: {
-        fontSize: 40,
-    },
-}));
 
 
 
@@ -68,6 +57,21 @@ function Login(){
         loginUser(username, password)
             .then((res) => {
                console.log(res)
+                handleGetCurrentUser()
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404)
+                    console.log(err)
+
+            })
+    }
+
+    function handleGetCurrentUser(){
+        getCurrentUser()
+            .then((res) => {
+                console.log(res)
+                localStorage.setItem('author', res.user);
+                localStorage.setItem('authorId', res.userId);
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)

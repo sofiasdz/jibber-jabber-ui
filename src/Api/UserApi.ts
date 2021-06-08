@@ -16,3 +16,11 @@ export function registerUser(email:string,username: string, password: string, ni
         body: JSON.stringify({'email':email,'username': username, 'password': password ,'nick':nick})
     });
 }
+
+export function getCurrentUser(): Promise<any> {
+    return request({
+        url: "/users/currentUser",
+        method: 'GET',
+
+    });
+}

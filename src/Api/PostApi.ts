@@ -2,7 +2,7 @@ import {API_BASE_URL} from '../Constants/Constants'
 import {request} from './API'
 import {PostType} from "../components/Types/Types";
 
-export function createPost( authorId:string,author: string, body: string): Promise<PostType[]> {
+export function createPost(authorId: string | null, author: string | null, body: string): Promise<PostType[]> {
     return request({
         url: API_BASE_URL + "/posts",
         method: 'POST',
