@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Login from "./components/Home/Login";
+import Register from "./components/Home/Register"
 import UserProfile from "./components/UserProfile/UserProfile"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Post from "./components/Posts/Posts";
@@ -18,6 +19,7 @@ class App extends React.Component  {
                 <li><Link to={'/'} className="nav-link"> Home </Link></li>
                 <li><Link to={'/userprofile'} className="nav-link">UserProfile</Link></li>
                 <li><Link to={'/post'} className="nav-link">Posts</Link></li>
+                <li><Link to={'/register'} className="nav-link">Register</Link></li>
               </ul>
             </nav>
             <hr/>
@@ -25,6 +27,7 @@ class App extends React.Component  {
               <Route exact path='/' component={Login}/>
               <Route path='/userProfile' component={UserProfile}/>
               <Route path='/post' component={Post}/>
+              <Route path='/register' component={Register}/>
             </Switch>
           </div>
         </Router>

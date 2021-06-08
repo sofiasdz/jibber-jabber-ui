@@ -8,3 +8,11 @@ export function loginUser(username: string, password: string): Promise<any> {
         body: JSON.stringify({'username': username, 'password': password })
     });
 }
+
+export function registerUser(email:string,username: string, password: string, nick: string): Promise<any> {
+    return request({
+        url: "/users/register",
+        method: 'POST',
+        body: JSON.stringify({'email':email,'username': username, 'password': password ,'nick':nick})
+    });
+}
