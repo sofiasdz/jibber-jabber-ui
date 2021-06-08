@@ -2,11 +2,11 @@ import {API_BASE_URL} from '../Constants/Constants'
 import {request} from './API'
 import {PostType} from "../components/Types/Types";
 
-export function createPost(author: string, body: string): Promise<PostType[]> {
+export function createPost( authorId:string,author: string, body: string): Promise<PostType[]> {
     return request({
         url: API_BASE_URL + "/posts",
         method: 'POST',
-        body: JSON.stringify({'author': author, 'body': body}),
+        body: JSON.stringify({'authorId':authorId,'author': author, 'body': body}),
         headers: {'Content-Type': 'application/json'}
     });
 }
@@ -26,3 +26,4 @@ export function getAllPosts(): Promise<any> {
         headers: {'Content-Type': 'application/json'}
     });
 }
+

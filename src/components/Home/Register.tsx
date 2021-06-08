@@ -23,7 +23,7 @@ function Register(){
         <Card >
             <CardContent>
                 <Typography  color="textSecondary" gutterBottom>
-                    Login
+                    Register
                 </Typography>
                 <form  noValidate autoComplete="off">
                     <div>
@@ -32,7 +32,7 @@ function Register(){
                         <TextField required id="standard-required" label="Required"  value={password} onChange={e => setPassword(e.target.value)} />
                         <TextField required id="standard-required" label="Required"  value={nick} onChange={e => setNick(e.target.value)} />
                         <Button variant="contained" color="primary" onClick={()=>handleRegister(email,username,password,nick)}>
-                            Login
+                            Register
                         </Button>
                     </div>
 
