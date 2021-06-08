@@ -6,16 +6,18 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
 import {loginUser} from "../../Api/UserApi";
 
 export type Props = RouteComponentProps<any> & {}
+
 
 export type State = {
     errorMessage: string,
     successMessage: string,
     username:string,
     password:string,
+
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -32,19 +34,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-class Login extends Component<Props, State>{
+function Login(){
+    const [password, setPassword] = useState("password");
+    const [username, setUsername] = useState("username");
 
 
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            errorMessage: '',
-            successMessage: '',
-            username:'',
-            password:''
-        }
-    }
-render() {
+
+
     return (
         <Card >
             <CardContent>
@@ -53,9 +49,9 @@ render() {
                 </Typography>
                 <form  noValidate autoComplete="off">
                     <div>
-                        <TextField required id="standard-required" label="Required"  defaultValue="Username" value={this.state.username}/>
-                        <TextField required id="standard-required" label="Required"  defaultValue="Password" value={this.state.password}/>
-                        <Button variant="contained" color="primary" onClick={()=>this.handleLogin(this.state.username,this.state.password)}>
+                        <TextField required id="standard-required" label="Required"  value={username} onChange={e => setUsername(e.target.value)}/>
+                        <TextField required id="standard-required" label="Required"  value={password} onChange={e => setPassword(e.target.value)} />
+                        <Button variant="contained" color="primary" onClick={()=>handleLogin(username,password)}>
                             Login
                         </Button>
                     </div>
@@ -64,20 +60,23 @@ render() {
             </CardContent>
         </Card>
     );
-}
 
- handleLogin=(username:string,password:string)=>{
+
+
+
+    function  handleLogin(username:string,password:string) {
         loginUser(username, password)
-         .then((res) => {
-             this.setState({errorMessage: '', successMessage: 'User successfully logged in'});
-             localStorage.setItem('token', res.token);
-             this.props.history.push('/');
-         })
-         .catch((err) => {
-             if (err.status === 401|| err.status===404)
-                 this.setState({successMessage: '', errorMessage: 'Invalid Credentials'});
-             else this.setState({successMessage: '', errorMessage: 'An error occurred logging into Trendz!'});
-         })
+            .then((res) => {
+               console.log(res)
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404)
+                    console.log(err)
+
+            })
     }
 }
+
+
+
 export default Login
