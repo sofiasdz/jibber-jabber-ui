@@ -6,63 +6,57 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
 import {registerUser} from "../../Api/UserApi";
 
-export type Props = RouteComponentProps<any> & {}
 
-export type State = {
-    errorMessage: string,
-    successMessage: string,
-    email:string,
-    password:string,
-}
-class Register extends Component<Props, State>{
+function Register(){
+    const [password, setPassword] = useState("password");
+    const [email, setEmail] = useState("email");
+    const [username, setUsername] = useState("username");
+    const [nick, setNick] = useState("nick");
 
 
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            errorMessage: '',
-            successMessage: '',
-            email:'',
-            password:''
-        }
-    }
-    render() {
-        return (
-            <Card >
-                <CardContent>
-                    <Typography  color="textSecondary" gutterBottom>
-                        Register
-                    </Typography>
-                    <form  noValidate autoComplete="off">
-                        <div>
-                            <TextField required id="standard-required" label="Required"  defaultValue="Email" value={this.state.email}/>
-                            <TextField required id="standard-required" label="Required"  defaultValue="Password" value={this.state.password}/>
-                            <Button variant="contained" color="primary" onClick={()=>this.handleRegister(this.state.email,this.state.password)}>
-                                Login
-                            </Button>
-                        </div>
 
-                    </form>
-                </CardContent>
-            </Card>
-        );
-    }
 
-    handleRegister=(username:string,password:string)=>{
-        registerUser(username, password)
+    return (
+        <Card >
+            <CardContent>
+                <Typography  color="textSecondary" gutterBottom>
+                    Register
+                </Typography>
+                <form  noValidate autoComplete="off">
+                    <div>
+                        <TextField required id="standard-required" label="Required"  value={email} onChange={e => setEmail(e.target.value)} />
+                        <TextField required id="standard-required" label="Required"  value={username} onChange={e => setUsername(e.target.value)}/>
+                        <TextField required id="standard-required" label="Required"  value={password} onChange={e => setPassword(e.target.value)} />
+                        <TextField required id="standard-required" label="Required"  value={nick} onChange={e => setNick(e.target.value)} />
+                        <Button variant="contained" color="primary" onClick={()=>handleRegister(email,username,password,nick)}>
+                            Register
+                        </Button>
+                    </div>
+
+                </form>
+            </CardContent>
+        </Card>
+    );
+
+
+
+
+    function  handleRegister(email:string,username:string,password:string,nick:string) {
+        registerUser(email,username, password,nick)
             .then((res) => {
-                this.setState({errorMessage: '', successMessage: 'User successfully logged in'});
-                localStorage.setItem('token', res.token);
-                this.props.history.push('/');
+                console.log(res)
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
-                    this.setState({successMessage: '', errorMessage: 'Invalid Credentials'});
-                else this.setState({successMessage: '', errorMessage: 'An error occurred  while registering'});
+                    console.log(err)
+
             })
     }
 }
+
+
+
 export default Register
