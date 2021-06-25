@@ -8,19 +8,26 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import {getAllPosts} from "../../Api/PostApi";
+import {PostType} from "../Types/Types"
+import {RouteComponentProps, withRouter} from "react-router-dom";
+
+export type Props = RouteComponentProps<any> & {}
+export type State = {
+    posts:PostType[],
+
+}
+
+class Posts extends Component<Props,State> {
 
 
-class Posts extends React.Component {
-
-    state = {
-        posts: [1,2,3,3],
-
-    }
-    constructor(props: {} | Readonly<{}>) {
+    constructor(props: Props) {
         super(props);
+        this.state = {
+            posts:[],
 
-    }
 
+        }
+    };
 
     handleSubmitPost = (title: string, description: string, link: string) => {
       /*  let topic = this.props.location.state.topic;
@@ -41,7 +48,7 @@ class Posts extends React.Component {
     }
 
     getPosts = () => {
-        getAllPosts().then(res => this.setState({posts: res.posts}))
+        getAllPosts().then(res => this.setState({posts: res}))
     }
 
     private handleCancel() {
@@ -58,14 +65,14 @@ class Posts extends React.Component {
                 <Container maxWidth="sm">
                     {
                         this.state.posts.length !== 0 ?
-                            this.state.posts.map(() => (
+                            this.state.posts.map((post, index) => (
                                < Card >
                             <CardContent>
                             <Typography variant="h5" component="h2">
-                        Author: Sofi
+                                {'Author:  ' + post.author}
                         </Typography>
                         <Typography variant="body2" component="p">
-                        Post text ahahsadakljdlkad
+                            {'Body  ' + post.body}
                         </Typography>
                         </CardContent>
                         </Card>
