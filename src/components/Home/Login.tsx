@@ -62,6 +62,7 @@ function Login(){
                     console.log(err)
 
             })
+        handleGetCurrentUser()
     }
 
     function handleGetCurrentUser(){

@@ -4,10 +4,11 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import Login from "./components/Home/Login";
 import Register from "./components/Home/Register"
-import UserProfile from "./components/UserProfile/UserProfile"
+
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Post from "./components/Posts/Posts";
 import CreatePost from "./components/Posts/CreatePosts";
+import Profile from "./components/UserProfile/Profile";
 
 class App extends React.Component  {
   render() {
@@ -27,7 +28,7 @@ class App extends React.Component  {
             <hr/>
             <Switch>
               <Route exact path='/' component={Login}/>
-              <Route path='/userProfile' component={UserProfile}/>
+              <Route path='/userProfile' component={Profile}/>
               <Route path='/post' component={Post}/>
               <Route path='/register' component={Register}/>
               <Route path='/createPost' component={CreatePost}/>
