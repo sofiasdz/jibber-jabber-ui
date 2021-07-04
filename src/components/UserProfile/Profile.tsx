@@ -5,7 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
 import {getCurrentUser, getUserInfo} from "../../Api/UserApi";
-import {Grid, TextField} from "@material-ui/core";
+import {Fab, Grid, TextField} from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import CheckIcon from '@material-ui/icons/Check';
+
 
 
 
@@ -56,8 +59,27 @@ export type State = {
         return(
         <Card>
             <CardContent>
-                <Typography style={{marginBottom:30}}> Your Profile</Typography>
+
+
                 <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <Typography style={{marginBottom:30}}> Your Profile</Typography>
+                    </Grid>
+                    { !updateMode &&
+                    <Grid item xs={6}>
+                <Fab color="secondary" aria-label="edit" onClick={()=>this.setState({updateMode:true})}>
+                    <EditIcon />
+                </Fab>
+                    </Grid>
+                    }
+                    { updateMode &&
+                    <Grid item xs={6}>
+                        <Fab color="primary" aria-label="edit" onClick={()=>this.handleProfileUpdate()}>
+                            <CheckIcon />
+                        </Fab>
+                    </Grid>
+                    }
+
                         <Grid item xs={12}>
                         <TextField
                            value={this.state.userName}
@@ -164,9 +186,10 @@ export type State = {
      }
 
 
+     private handleProfileUpdate() {
 
-
-}
+     }
+ }
 
 
 
