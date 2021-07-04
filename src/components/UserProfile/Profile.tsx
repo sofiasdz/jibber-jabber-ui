@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
 import {getCurrentUser, getUserInfo} from "../../Api/UserApi";
+import {Grid, TextField} from "@material-ui/core";
 
 
 
@@ -18,7 +19,8 @@ export type State = {
     nick: string,
     bio: string,
     id: string,
-    getDataError: string
+    getDataError: string,
+    updateMode:boolean
 
 }
 
@@ -35,6 +37,7 @@ export type State = {
              bio:'biofalsa',
              email:'emailsalfo',
              getDataError:'',
+             updateMode: false,
 
 
          }
@@ -48,29 +51,79 @@ export type State = {
 
 
     render() {
+         let updateMode= this.state.updateMode;
+
         return(
         <Card>
             <CardContent>
-                <Typography color="textSecondary" gutterBottom>
-                    User Profile
-                </Typography>
+                <Typography style={{marginBottom:30}}> Your Profile</Typography>
+                <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                        <TextField
+                           value={this.state.userName}
+                            label="Username"
+                           variant="outlined"
+                           helperText="This value cant be changed"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <TextField
+                            value={this.state.email}
+                            label="Email"
+                            variant="outlined"
+                            helperText="This value cant be changed"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                        </Grid>
+                    {!updateMode &&
+                    <div>
+                    <Grid item xs={12}>
+                        <TextField
+                            value={this.state.nick}
+                            label="Nick"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            style={{marginLeft:15}}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            value={this.state.bio}
+                            label="Bio"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            style={{marginLeft:15}}
+                        />
+                    </Grid>
+                    </div>}
+                        {updateMode &&
+                            <div style={{marginLeft:10}}>
+                        <Grid item xs={12}>
+                <TextField style={{marginLeft:10}} label="Nick" value={this.state.nick} onChange={e => this.setState( {nick:e.target.value})}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                <TextField  style={{marginLeft:10}} label="Bio" value={this.state.bio} onChange={e => this.setState( {bio:e.target.value})}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                    <TextField
+                    id="standard-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    style={{marginLeft:10}}
+                    />
+                        </Grid>
+                    </div>
+                }
 
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.userName}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.nick}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.email}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.bio}
-                </Typography>
-
-
-
-
+            </Grid>
             </CardContent>
         </Card>
         );
