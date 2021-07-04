@@ -69,8 +69,8 @@ function Login(){
         getCurrentUser()
             .then((res) => {
                 console.log(res)
-                localStorage.setItem('author', res.user);
-                localStorage.setItem('authorId', res.userId);
+                window.localStorage.setItem('author', res.user);
+                window.localStorage.setItem('authorId', res.userId);
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)

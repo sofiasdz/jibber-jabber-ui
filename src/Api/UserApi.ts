@@ -26,7 +26,7 @@ export function getCurrentUser(): Promise<any> {
 
 export function getUserInfo(id: string): Promise<any> {
     return request({
-        url: "/users/"+ id,
+        url: "/users/"+id,
         method: 'GET',
 
     });
