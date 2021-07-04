@@ -16,10 +16,12 @@ module.exports = app => {
         })
     );
     app.use(
-        "/users/register",
+        "/users",
         createProxyMiddleware ({
             target: "http://localhost:8002",
             changeOrigin: true
         })
     );
+
+
 };

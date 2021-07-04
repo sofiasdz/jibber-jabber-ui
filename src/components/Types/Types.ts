@@ -1,7 +1,15 @@
 
 export type PostType = {
-    id:number
+    id:string
     author: string,
     body: string,
 
+}
+
+export type ProfileType ={
+    id: string;
+ nick:string;
+   username:string;
+    email:string;
+    bio:string;
 }
