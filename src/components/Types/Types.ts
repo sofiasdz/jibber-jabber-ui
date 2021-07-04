@@ -3,6 +3,8 @@ export type PostType = {
     id:string
     author: string,
     body: string,
+    date:string,
+    likes:string
 
 }
 

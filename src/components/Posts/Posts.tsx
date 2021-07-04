@@ -68,12 +68,18 @@ class Posts extends Component<Props,State> {
                             this.state.posts.map((post, index) => (
                                < Card >
                             <CardContent>
+                                <Typography variant="body2" component="p">
+                                    {post.date}
+                                </Typography>
                             <Typography variant="h5" component="h2">
                                 {'Author:  ' + post.author}
                         </Typography>
                         <Typography variant="body2" component="p">
                             {'Body  ' + post.body}
                         </Typography>
+                                <Typography variant="body2" component="p">
+                                    {post.likes}
+                                </Typography>
                         </CardContent>
                         </Card>
 
