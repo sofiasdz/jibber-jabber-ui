@@ -99,7 +99,7 @@ export type State = {
              .then((res) => {
                  console.log(res)
                  this.setState({id:res.userId})
-                 this.getProfile(res.userId)
+                 this.getProfile(this.state.id)
              })
              .catch((err) => {
                  if (err.status === 401|| err.status===404)
