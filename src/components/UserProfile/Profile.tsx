@@ -4,10 +4,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
-import {getCurrentUser, getUserInfo} from "../../Api/UserApi";
+import {getCurrentUser, getUserInfo, updateUser} from "../../Api/UserApi";
 import {Fab, Grid, TextField} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import CheckIcon from '@material-ui/icons/Check';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 
 
@@ -23,7 +24,8 @@ export type State = {
     bio: string,
     id: string,
     getDataError: string,
-    updateMode:boolean
+    updateMode:boolean,
+    isAlertOpen: boolean
 
 }
 
@@ -41,6 +43,7 @@ export type State = {
              email:'emailsalfo',
              getDataError:'',
              updateMode: false,
+             isAlertOpen: false
 
 
          }
@@ -55,6 +58,7 @@ export type State = {
 
     render() {
          let updateMode= this.state.updateMode;
+         let isAlertOpen= this.state.isAlertOpen
 
         return(
         <Card>
@@ -79,7 +83,16 @@ export type State = {
                         </Fab>
                     </Grid>
                     }
+                    { isAlertOpen &&
+                        <div>
+                            <Alert severity="success" onClose={() => {this.setState({isAlertOpen:false})}}>
+                                <AlertTitle>Success</AlertTitle>
+                                Your Profile Was Updated Successfully — <strong>check it out!</strong>
+                            </Alert>
+                        </div>
 
+
+                    }
                         <Grid item xs={12}>
                         <TextField
                            value={this.state.userName}
@@ -187,6 +200,16 @@ export type State = {
 
 
      private handleProfileUpdate() {
+         updateUser(this.state.nick,this.state.bio)
+             .then((res) => {
+                 console.log(res)
+                 this.setState({updateMode:false,isAlertOpen:true})
+             })
+             .catch((err) => {
+                 if (err.status === 401|| err.status===404)
+                     console.log(err)
+
+             })
 
      }
  }
