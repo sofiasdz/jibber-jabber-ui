@@ -4,7 +4,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
-import {getCurrentUser, getUserInfo} from "../../Api/UserApi";
+import {getCurrentUser, getUserInfo, updateUser} from "../../Api/UserApi";
+import {Fab, Grid, TextField} from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
+import CheckIcon from '@material-ui/icons/Check';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
 
 
 
@@ -18,7 +23,9 @@ export type State = {
     nick: string,
     bio: string,
     id: string,
-    getDataError: string
+    getDataError: string,
+    updateMode:boolean,
+    isAlertOpen: boolean
 
 }
 
@@ -35,6 +42,8 @@ export type State = {
              bio:'biofalsa',
              email:'emailsalfo',
              getDataError:'',
+             updateMode: false,
+             isAlertOpen: false
 
 
          }
@@ -48,29 +57,108 @@ export type State = {
 
 
     render() {
+         let updateMode= this.state.updateMode;
+         let isAlertOpen= this.state.isAlertOpen
+
         return(
         <Card>
             <CardContent>
-                <Typography color="textSecondary" gutterBottom>
-                    User Profile
-                </Typography>
-
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.userName}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.nick}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.email}
-                </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                    {this.state.bio}
-                </Typography>
 
 
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <Typography style={{marginBottom:30}}> Your Profile</Typography>
+                    </Grid>
+                    { !updateMode &&
+                    <Grid item xs={6}>
+                <Fab color="secondary" aria-label="edit" onClick={()=>this.setState({updateMode:true})}>
+                    <EditIcon />
+                </Fab>
+                    </Grid>
+                    }
+                    { updateMode &&
+                    <Grid item xs={6}>
+                        <Fab color="primary" aria-label="edit" onClick={()=>this.handleProfileUpdate()}>
+                            <CheckIcon />
+                        </Fab>
+                    </Grid>
+                    }
+                    { isAlertOpen &&
+                        <div>
+                            <Alert severity="success" onClose={() => {this.setState({isAlertOpen:false})}}>
+                                <AlertTitle>Success</AlertTitle>
+                                Your Profile Was Updated Successfully — <strong>check it out!</strong>
+                            </Alert>
+                        </div>
 
 
+                    }
+                        <Grid item xs={12}>
+                        <TextField
+                           value={this.state.userName}
+                            label="Username"
+                           variant="outlined"
+                           helperText="This value cant be changed"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <TextField
+                            value={this.state.email}
+                            label="Email"
+                            variant="outlined"
+                            helperText="This value cant be changed"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                        </Grid>
+                    {!updateMode &&
+                    <div>
+                    <Grid item xs={12}>
+                        <TextField
+                            value={this.state.nick}
+                            label="Nick"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            style={{marginLeft:15}}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            value={this.state.bio}
+                            label="Bio"
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                            style={{marginLeft:15}}
+                        />
+                    </Grid>
+                    </div>}
+                        {updateMode &&
+                            <div style={{marginLeft:10}}>
+                        <Grid item xs={12}>
+                <TextField style={{marginLeft:10}} label="Nick" value={this.state.nick} onChange={e => this.setState( {nick:e.target.value})}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                <TextField  style={{marginLeft:10}} label="Bio" value={this.state.bio} onChange={e => this.setState( {bio:e.target.value})}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                    <TextField
+                    id="standard-password-input"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    style={{marginLeft:10}}
+                    />
+                        </Grid>
+                    </div>
+                }
+
+            </Grid>
             </CardContent>
         </Card>
         );
@@ -111,9 +199,20 @@ export type State = {
      }
 
 
+     private handleProfileUpdate() {
+         updateUser(this.state.nick,this.state.bio)
+             .then((res) => {
+                 console.log(res)
+                 this.setState({updateMode:false,isAlertOpen:true})
+             })
+             .catch((err) => {
+                 if (err.status === 401|| err.status===404)
+                     console.log(err)
 
+             })
 
-}
+     }
+ }
 
 
 
