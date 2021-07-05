@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CreatePost from "./components/Posts/CreatePosts";
 import Profile from "./components/UserProfile/Profile";
 import SearchUsers from "./components/SearchUsers/SearchUsers";
+import ViewProfile from "./components/SearchUsers/ViewProfile";
 
 class App extends React.Component  {
   render() {
@@ -30,6 +31,7 @@ class App extends React.Component  {
               <Route path='/register' component={Register}/>
               <Route path='/createPost' component={CreatePost}/>
               <Route path='/searchUsers' component={SearchUsers}/>
+              <Route path='/viewProfile/:id' component={ViewProfile}/>
             </Switch>
           </div>
         </Router>

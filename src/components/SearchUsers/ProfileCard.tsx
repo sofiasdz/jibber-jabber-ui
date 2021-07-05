@@ -113,6 +113,7 @@ class  ProfileCard extends Component<Props,State> {
 
     componentDidMount() {
     this.handleGetCurrentUser()
+
     }
 
 
@@ -134,7 +135,7 @@ class  ProfileCard extends Component<Props,State> {
     }
 
   handleViewProfile(id: string) {
-
+      this.props.history.push('/viewProfile/' + this.props.profile.id)
     }
 
 
