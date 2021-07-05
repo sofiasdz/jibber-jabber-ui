@@ -17,6 +17,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import {Alert, AlertTitle} from "@material-ui/lab";
 
 
 export type State = {
@@ -25,6 +26,7 @@ export type State = {
   id:string,
   userName:string,
   posts:PostType[],
+    isAlertOpen:boolean,
 
 }
 
@@ -38,7 +40,8 @@ class  CreatePost extends Component<Props,State> {
            userName:'',
             isLoggerIn: false,
             body:'',
-            posts:[]
+            posts:[],
+            isAlertOpen:false
 
 
         }
@@ -47,6 +50,7 @@ class  CreatePost extends Component<Props,State> {
 
     render() {
         let isLoggedIn=this.state.isLoggerIn;
+        let isAlertOpen=this.state.isAlertOpen;
         return (
             <CssBaseline >
                 <Grid
@@ -100,6 +104,16 @@ class  CreatePost extends Component<Props,State> {
             <React.Fragment>
                 <CssBaseline />
                 <Container style={ {alignItems:"center"}}>
+                    { isAlertOpen &&
+                    <div>
+                        <Alert severity="success" onClose={() => {this.setState({isAlertOpen:false})}}>
+                            <AlertTitle>Success</AlertTitle>
+                            Your Post was created successfully! — <strong>check it out!</strong>
+                        </Alert>
+                    </div>
+
+
+                    }
                     {
                         this.state.posts.length !== 0 ?
                             this.state.posts.map((post, index) => (
@@ -153,7 +167,7 @@ class  CreatePost extends Component<Props,State> {
         createPost(this.state.id,this.state.userName,body)
             .then((res) => {
                 console.log(res)
-                this.setState({body:" "})
+                this.setState({body:" ",isAlertOpen:true})
                 this.getPosts()
             })
             .catch((err) => {
