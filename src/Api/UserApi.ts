@@ -1,4 +1,5 @@
 import {request} from "./API";
+import {ProfileType} from "../components/Types/Types";
 
 export function loginUser(username: string, password: string): Promise<any> {
     return request({
@@ -37,5 +38,34 @@ export function updateUser(nick: string, bio:string): Promise<any> {
         url: "/users/update",
         method: 'PUT',
         body: JSON.stringify({'nick': nick, 'bio': bio })
+    });
+}
+
+export function searchUser(search: string): Promise<any> {
+    return request({
+        url: "/users/wildcard/"+search,
+        method: 'GET',
+
+    });
+}
+
+export function followUser(userId: string): Promise<any> {
+    return request({
+        url: "/users/follow/"+userId,
+        method: 'PUT',
+    });
+}
+
+export function unfollowUser(userId: string): Promise<any> {
+    return request({
+        url: "/users/unfollow/"+userId,
+        method: 'PUT',
+    });
+}
+
+export function getFollows(): Promise<any> {
+    return request({
+        url: "/users/followed",
+        method: 'GET',
     });
 }
