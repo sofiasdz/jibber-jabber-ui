@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import CreatePost from "./components/Posts/CreatePosts";
 import Profile from "./components/UserProfile/Profile";
+import SearchUsers from "./components/SearchUsers/SearchUsers";
 
 class App extends React.Component  {
   render() {
@@ -19,6 +20,7 @@ class App extends React.Component  {
                 <li><Link to={'/userprofile'} className="nav-link">UserProfile</Link></li>
                 <li><Link to={'/register'} className="nav-link">Register</Link></li>
                 <li><Link to={'/createPost'} className="nav-link">Timeline</Link></li>
+                <li><Link to={'/searchUsers'} className="nav-link">Explore</Link></li>
               </ul>
             </nav>
             <hr/>
@@ -27,6 +29,7 @@ class App extends React.Component  {
               <Route path='/userProfile' component={Profile}/>
               <Route path='/register' component={Register}/>
               <Route path='/createPost' component={CreatePost}/>
+              <Route path='/searchUsers' component={SearchUsers}/>
             </Switch>
           </div>
         </Router>

@@ -1,4 +1,5 @@
 import {request} from "./API";
+import {ProfileType} from "../components/Types/Types";
 
 export function loginUser(username: string, password: string): Promise<any> {
     return request({
@@ -37,5 +38,13 @@ export function updateUser(nick: string, bio:string): Promise<any> {
         url: "/users/update",
         method: 'PUT',
         body: JSON.stringify({'nick': nick, 'bio': bio })
+    });
+}
+
+export function searchUser(search: string): Promise<ProfileType[]> {
+    return request({
+        url: "/users/update/"+search,
+        method: 'GET',
+
     });
 }
