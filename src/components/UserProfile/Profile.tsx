@@ -63,8 +63,6 @@ export type State = {
         return(
         <Card>
             <CardContent>
-
-
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <Typography style={{marginBottom:30}}> Your Profile</Typography>
