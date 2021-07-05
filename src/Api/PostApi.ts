@@ -26,3 +26,12 @@ export function getAllPosts(): Promise<any> {
     });
 }
 
+export function likePost(authorId: string,postId:string): Promise<any> {
+    return request({
+        url: "/posts/like",
+        method: 'PUT',
+        body: JSON.stringify({'authorId':authorId,'postId': postId}),
+        headers: {'Content-Type': 'application/json'}
+    });
+}
+

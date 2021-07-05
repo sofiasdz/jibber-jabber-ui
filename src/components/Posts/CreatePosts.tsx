@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
-import {createPost, getAllPosts} from "../../Api/PostApi";
+import {createPost, getAllPosts, likePost} from "../../Api/PostApi";
 import {Grid} from "@material-ui/core";
 import {getCurrentUser} from "../../Api/UserApi";
 import {Props} from "../UserProfile/Profile";
@@ -27,6 +27,7 @@ export type State = {
   posts:PostType[],
 
 }
+
 
 class  CreatePost extends Component<Props,State> {
 
@@ -115,7 +116,7 @@ class  CreatePost extends Component<Props,State> {
                                         </Typography>
                                         <Grid container spacing={0} style={{marginTop:10}}>
                                             <Grid item xs={3}>
-                                        <Button variant="outlined" color="primary" >
+                                        <Button variant="outlined" color="primary" onClick={()=>this.handlePostLike(post.id,this.state.id)} >
                                             <ThumbUpAltIcon></ThumbUpAltIcon>
                                         </Button>
                                             </Grid>
@@ -152,6 +153,7 @@ class  CreatePost extends Component<Props,State> {
         createPost(this.state.id,this.state.userName,body)
             .then((res) => {
                 console.log(res)
+                this.setState({body:" "})
                 this.getPosts()
             })
             .catch((err) => {
@@ -178,6 +180,21 @@ class  CreatePost extends Component<Props,State> {
 
             })
     }
+
+ handlePostLike(id: string, id2: string) {
+     likePost(id2,id)
+         .then(() => {
+             //this.getPosts()
+         })
+         .catch((err) => {
+             if (err.status === 401|| err.status===404)
+                 console.log(err)
+
+         })
+
+
+    }
+
 }
 
 
