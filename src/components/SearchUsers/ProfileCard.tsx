@@ -5,10 +5,12 @@ import {Grid} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import {followUser, getCurrentUser, searchUser} from "../../Api/UserApi";
+import {followUser, getCurrentUser, searchUser, unfollowUser} from "../../Api/UserApi";
 import {ProfileType} from "../Types/Types";
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import {Alert, AlertTitle} from "@material-ui/lab";
+import Container from "@material-ui/core/Container";
 
 
 export type Props = RouteComponentProps<any> & {profile:ProfileType}
@@ -18,7 +20,9 @@ export type Props = RouteComponentProps<any> & {profile:ProfileType}
 export type State = {
     userName: string,
     id: string,
-
+    isAlertOpen:boolean,
+    follows:boolean,
+    isAlertOpenUnfollow:boolean
 
 }
 
@@ -30,6 +34,9 @@ class  ProfileCard extends Component<Props,State> {
         this.state = {
             id:'',
             userName:'usernamefalso',
+            isAlertOpen:false,
+            follows:false,
+            isAlertOpenUnfollow:false
 
 
 
@@ -39,7 +46,9 @@ class  ProfileCard extends Component<Props,State> {
     }
 
     render() {
-
+    let isAlertOpen= this.state.isAlertOpen;
+    let isAlertOpenUnfollow= this.state.isAlertOpenUnfollow
+    let follows=this.state.follows;
         return(
             <CssBaseline>
                 <Grid
@@ -49,6 +58,28 @@ class  ProfileCard extends Component<Props,State> {
                     alignItems="center"
                     justify="center"
                 >
+                    { isAlertOpen &&
+                <Grid item xs={12} >
+                <div>
+                    <Alert severity="success" onClose={() => {this.setState({isAlertOpen:false})}}>
+                        <AlertTitle>Success</AlertTitle>
+                        You now Follow +{this.props.profile.nick}! <strong>check out their profile!</strong>
+                    </Alert>
+                </div>
+                </Grid>
+
+                }
+                    { isAlertOpenUnfollow &&
+                    <Grid item xs={12} >
+                        <div>
+                            <Alert severity="info" onClose={() => {this.setState({isAlertOpenUnfollow:false})}}>
+                                <AlertTitle>Success</AlertTitle>
+                                You unfollowed {this.props.profile.nick}! <strong>who needs them anyway!</strong>
+                            </Alert>
+                        </div>
+                    </Grid>
+
+                    }
                     <Card style={{width:1000,backgroundPosition:"center"}}>
                         <CardContent >
                             <Typography color="textSecondary" variant="h6" gutterBottom>
@@ -68,7 +99,8 @@ class  ProfileCard extends Component<Props,State> {
                             <Grid item xs={12}>
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                                     <Button onClick={()=>this.handleViewProfile(this.props.profile.id)}>View Profile</Button>
-                                    <Button>Follow onClick={()=>this.handleFollow(this.props.profile.id)}</Button>
+                                    { !follows&& <Button onClick={()=>this.handleFollow(this.props.profile.id)}> Follow </Button>}
+                                    { follows && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.props.profile.id)}> Unfollow </Button>}
                                 </ButtonGroup>
                             </Grid>
                         </CardContent>
@@ -110,6 +142,21 @@ class  ProfileCard extends Component<Props,State> {
         followUser(id2)
             .then((res) => {
                 console.log(this.state)
+                this.setState({isAlertOpen:true, follows:true})
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404)
+                    console.log(err)
+
+            })
+
+    }
+
+    handleUnfollow(id: string) {
+        unfollowUser(id)
+            .then((res) => {
+                console.log(this.state)
+                this.setState({isAlertOpenUnfollow:true, follows:false})
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
