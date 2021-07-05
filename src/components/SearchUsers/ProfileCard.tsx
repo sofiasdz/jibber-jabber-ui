@@ -63,7 +63,7 @@ class  ProfileCard extends Component<Props,State> {
                 <div>
                     <Alert severity="success" onClose={() => {this.setState({isAlertOpen:false})}}>
                         <AlertTitle>Success</AlertTitle>
-                        You now Follow +{this.props.profile.nick}! <strong>check out their profile!</strong>
+                        You now follow <strong>{this.props.profile.nick}</strong>! <strong>check out their profile!</strong>
                     </Alert>
                 </div>
                 </Grid>
@@ -74,7 +74,7 @@ class  ProfileCard extends Component<Props,State> {
                         <div>
                             <Alert severity="info" onClose={() => {this.setState({isAlertOpenUnfollow:false})}}>
                                 <AlertTitle>Success</AlertTitle>
-                                You unfollowed {this.props.profile.nick}! <strong>who needs them anyway!</strong>
+                                You unfollowed <strong>{this.props.profile.nick}</strong>! <strong>who needs them anyway!</strong>
                             </Alert>
                         </div>
                     </Grid>
