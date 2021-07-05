@@ -8,13 +8,14 @@ import Typography from "@material-ui/core/Typography";
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import CreatePost from "../Posts/CreatePosts";
 import {getCurrentUser, searchUser} from "../../Api/UserApi";
-import {getAllPosts} from "../../Api/PostApi";
 import {ProfileType} from "../Types/Types";
+import Box from "@material-ui/core/Box";
+import ProfileCard from "./ProfileCard";
 
 
-export type Props = RouteComponentProps<any> & {}
+export type Props = RouteComponentProps<any> & { }
+
 
 
 
@@ -23,6 +24,7 @@ export type State = {
     id: string,
     users:ProfileType[],
     search:string,
+    loading:boolean
 
 }
 
@@ -36,7 +38,8 @@ class  SearchUsers extends Component<Props,State> {
             id:'',
             userName:'usernamefalso',
             users:[],
-            search:"Search.."
+            search:"Search..",
+            loading:true,
 
 
         }
@@ -76,17 +79,29 @@ class  SearchUsers extends Component<Props,State> {
                     </Card>
                 </Grid>
 
+                <Box component="span" m={1} >
+                    <React.Fragment>
+                        {this.state.users.length !== 0 ?
+                                this.state.users.map((post,index) => (
+                                            <ProfileCard key={index} profile={post}  history={this.props.history} location={this.props.location} match={this.props.match}/>
+                                            )):
+                                <span >No results!</span>
+                        }
+                    </React.Fragment>
+                </Box>
+
             </CssBaseline>
         );
     }
 
     componentDidMount() {
+        this.handleGetCurrentUser()
 
     }
 
 
     searchUser = (search:string) => {
-        searchUser(search).then(res => this.setState({users: res}))
+        searchUser(search).then(res => this.setState({users: res.users,}))
     }
 
 
@@ -106,6 +121,7 @@ class  SearchUsers extends Component<Props,State> {
 
    handleSearchChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
        this.setState({search:e.target.value})
+       this.searchUser(this.state.search)
 
     }
 

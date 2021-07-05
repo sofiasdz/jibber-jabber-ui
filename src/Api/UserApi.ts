@@ -41,10 +41,31 @@ export function updateUser(nick: string, bio:string): Promise<any> {
     });
 }
 
-export function searchUser(search: string): Promise<ProfileType[]> {
+export function searchUser(search: string): Promise<any> {
     return request({
-        url: "/users/update/"+search,
+        url: "/users/wildcard/"+search,
         method: 'GET',
 
+    });
+}
+
+export function followUser(userId: string): Promise<any> {
+    return request({
+        url: "/users/follow/"+userId,
+        method: 'PUT',
+    });
+}
+
+export function unfollowUser(userId: string): Promise<any> {
+    return request({
+        url: "/users/unfollow/"+userId,
+        method: 'PUT',
+    });
+}
+
+export function getFollows(): Promise<any> {
+    return request({
+        url: "/users/followed",
+        method: 'GET',
     });
 }
