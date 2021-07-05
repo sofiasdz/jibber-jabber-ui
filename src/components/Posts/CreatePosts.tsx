@@ -47,26 +47,39 @@ class  CreatePost extends Component<Props,State> {
     render() {
         let isLoggedIn=this.state.isLoggerIn;
         return (
-            <CssBaseline>
-            <Card>
-                <CardContent>
+            <CssBaseline >
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+
+                >
+            <Card style={{width:1000,backgroundPosition:"center"}}>
+                <CardContent >
 
                     <Typography color="textSecondary" gutterBottom>
-                        Create Post
+                        ¿Whats on your mind?
                     </Typography>
                     {isLoggedIn &&
                         <div>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <TextField required id="standard-required" label="Required" multiline={true} value={this.state.body}
+                    <Grid container spacing={3}
+                          direction="column"
+                          alignItems="center"
+                          justify="center">
+                        <Grid item xs={12} >
+
+                            <TextField required id="standard-required"  multiline
+                                       rows={4} label="Required" style={{width:900}} value={this.state.body}
                                        onChange={e => this.setState({body:e.target.value})}/>
                         </Grid>
 
                         <Grid item xs={12}>
 
-                            <Button variant="contained" color="primary"
+                            <Button variant="contained" color="primary" style={{marginLeft:750}}
                                     onClick={() => this.handleCreatePosts(this.state.body)}>
-                                Create Post
+                                Post
                             </Button>
                         </Grid>
                     </Grid>
@@ -78,16 +91,18 @@ class  CreatePost extends Component<Props,State> {
                     </Typography>
 
                     }
+
                 </CardContent>
             </Card>
+                </Grid>
         <Box component="span" m={1} >
             <React.Fragment>
                 <CssBaseline />
-                <Container maxWidth="sm">
+                <Container style={ {alignItems:"center"}}>
                     {
                         this.state.posts.length !== 0 ?
                             this.state.posts.map((post, index) => (
-                                < Card style={{marginTop:50,marginBottom:50}} >
+                                < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} >
                                     <CardContent>
                                         <Typography variant="subtitle2" component="p">
                                             {post.timeRecorded}
@@ -123,6 +138,7 @@ class  CreatePost extends Component<Props,State> {
                 </Container>
             </React.Fragment>
         </Box>
+
          </CssBaseline>
 
         );
