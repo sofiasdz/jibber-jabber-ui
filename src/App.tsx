@@ -8,6 +8,7 @@ import CreatePost from "./components/Posts/CreatePosts";
 import Profile from "./components/UserProfile/Profile";
 import SearchUsers from "./components/SearchUsers/SearchUsers";
 import ViewProfile from "./components/SearchUsers/ViewProfile";
+import UserChat from "./components/Chat/UserChat";
 
 class App extends React.Component  {
   render() {
@@ -32,6 +33,7 @@ class App extends React.Component  {
               <Route path='/createPost' component={CreatePost}/>
               <Route path='/searchUsers' component={SearchUsers}/>
               <Route path='/viewProfile/:id' component={ViewProfile}/>
+              <Route path='/dm/:id' component={UserChat}/>
             </Switch>
           </div>
         </Router>

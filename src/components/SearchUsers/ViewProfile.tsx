@@ -78,6 +78,7 @@ class  ViewProfile extends Component<Props,State> {
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                                     { !follows && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
                                     { follows && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
+                                    <Button onClick={()=>this.handleMessage(this.state.profile.id)}>Message</Button>
                                 </ButtonGroup>
                         </Grid>
 
@@ -214,6 +215,10 @@ class  ViewProfile extends Component<Props,State> {
     }
 
 
+    handleMessage(id: string) {
+        this.props.history.push('/dm/' + this.state.profile.id)
+
+    }
 }
 
 
