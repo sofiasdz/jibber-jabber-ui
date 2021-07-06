@@ -167,8 +167,10 @@ class  CreatePost extends Component<Props,State> {
     }
 
     getFollowed = () => {
-        getFollowed().then(res => this.setState({followed: res.followed}))
-        this.getPosts()
+        getFollowed().then(res => {this.setState({followed: res.followed})
+        this.getPosts()}
+        )
+
     }
   handleCreatePosts(body: string) {
         createPost(this.state.id,this.state.userName,body)

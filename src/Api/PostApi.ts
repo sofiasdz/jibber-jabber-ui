@@ -30,7 +30,7 @@ export function getAllPosts(): Promise<any> {
 export function getTimeline(followed:string[]): Promise<any> {
     return request({
         url:"/posts/timeline",
-        method: 'GET',
+        method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({followed:followed}),
     });
