@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
-import {getCurrentUser, searchUser} from "../../Api/UserApi";
+import {getCurrentUser, searchUser,getFollowed} from "../../Api/UserApi";
 import {ProfileType} from "../Types/Types";
 import Box from "@material-ui/core/Box";
 import ProfileCard from "./ProfileCard";
@@ -24,7 +24,8 @@ export type State = {
     id: string,
     users:ProfileType[],
     search:string,
-    loading:boolean
+    loading:boolean,
+    followed:string[]
 
 }
 
@@ -40,6 +41,7 @@ class  SearchUsers extends Component<Props,State> {
             users:[],
             search:"Search..",
             loading:true,
+            followed:[]
 
 
         }
@@ -82,8 +84,8 @@ class  SearchUsers extends Component<Props,State> {
                 <Box component="span" m={1} >
                     <React.Fragment>
                         {this.state.users.length !== 0 ?
-                                this.state.users.map((post,index) => (
-                                            <ProfileCard key={index} profile={post}  history={this.props.history} location={this.props.location} match={this.props.match}/>
+                                this.state.users.map((profile,index) => (
+                                            <ProfileCard key={index} profile={profile}  history={this.props.history} location={this.props.location} match={this.props.match}/>
                                             )):
                                 <span >No results!</span>
                         }
@@ -124,6 +126,8 @@ class  SearchUsers extends Component<Props,State> {
        this.searchUser(this.state.search)
 
     }
+
+
 
 
 

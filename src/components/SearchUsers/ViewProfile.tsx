@@ -4,15 +4,19 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
-import {followUser, getCurrentUser, getUserInfo, unfollowUser, updateUser} from "../../Api/UserApi";
+import {followUser, getCurrentUser, getUserInfo, unfollowUser, getFollowed} from "../../Api/UserApi";
 import {Fab, Grid, TextField} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import CheckIcon from '@material-ui/icons/Check';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import {ProfileType} from "../Types/Types";
+import {PostType, ProfileType} from "../Types/Types";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-
+import Box from "@material-ui/core/Box";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import {getAllUserPosts, likePost} from "../../Api/PostApi";
 
 
 
@@ -25,16 +29,18 @@ export type State = {
     userName: string,
     id: string,
     isAlertOpen: boolean,
-    follows:boolean,
     isAlertOpenUnfollow:boolean,
     profile:ProfileType,
     getDataError:string,
-
+    posts:PostType[],
+    followed:string[]
 
 }
 
 
 class  ViewProfile extends Component<Props,State> {
+
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -42,7 +48,6 @@ class  ViewProfile extends Component<Props,State> {
             userName:'usernamefalso',
             isAlertOpen: false,
             isAlertOpenUnfollow:false,
-            follows:false,
             getDataError:"",
             profile:{
                 id:'',
@@ -50,8 +55,9 @@ class  ViewProfile extends Component<Props,State> {
                 bio:'',
                 email:'',
                 nick:''
-            }
-
+            },
+            posts:[],
+            followed:[]
 
         }
 
@@ -66,9 +72,10 @@ class  ViewProfile extends Component<Props,State> {
     render() {
         let isAlertOpen= this.state.isAlertOpen;
         let isAlertOpenUnfollow=this.state.isAlertOpenUnfollow;
-        let follows=this.state.follows;
+
 
         return(
+            <CssBaseline>
             <Card>
                 <CardContent>
                     <Grid container spacing={3}>
@@ -77,8 +84,8 @@ class  ViewProfile extends Component<Props,State> {
                         </Grid>
                         <Grid item xs={6}>
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                    { !follows && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
-                                    { follows && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
+                                    {  !this.state.followed.includes(this.state.profile.id)  && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
+                                    { this.state.followed.includes(this.state.profile.id) && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
                                     <Button onClick={()=>this.handleMessage(this.state.profile.id)}>Message</Button>
                                 </ButtonGroup>
                         </Grid>
@@ -152,12 +159,63 @@ class  ViewProfile extends Component<Props,State> {
                     </Grid>
                 </CardContent>
             </Card>
+
+        <Box component="span" m={1} >
+
+            <React.Fragment>
+                <CssBaseline />
+                <Container style={ {alignItems:"center"}}>
+                    <Typography variant="h6" >
+                        {this.state.profile.nick}'s Posts
+                    </Typography>
+                    {
+                        this.state.posts.length !== 0 ?
+                            this.state.posts.map((post, index) => (
+                                < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} >
+                                    <CardContent>
+                                        <Typography variant="subtitle2" component="p">
+                                            {post.timeRecorded}
+                                        </Typography>
+                                        <Typography variant="subtitle1" component="h2">
+                                            {post.author}
+                                        </Typography>
+                                        <Typography variant="h6" component="p">
+                                            {post.body}
+                                        </Typography>
+                                        <Grid container spacing={0} style={{marginTop:10}}>
+                                            <Grid item xs={3}>
+                                                <Button variant="outlined" color="primary" onClick={()=>this.handlePostLike(post.id,this.state.id)} >
+                                                    <ThumbUpAltIcon></ThumbUpAltIcon>
+                                                </Button>
+                                            </Grid>
+                                            <Grid item xs={3}>
+                                                <Typography variant="h6" component="p" style={{marginRight:10}}>
+                                                    {post.likes}
+                                                </Typography>
+                                            </Grid>
+
+                                        </Grid>
+
+
+
+                                    </CardContent>
+                                </Card>
+
+                            )) :
+                            <span className={'empty-message'}>No posts yet!</span>
+                    }
+                </Container>
+            </React.Fragment>
+        </Box>
+          </CssBaseline>
         );
     }
 
     componentDidMount() {
         this.handleGetCurrentUser()
         this.getProfile(this.props.match.params.id )
+        this.getUserPosts(this.props.match.params.id)
+        this.getFollowed()
     }
 
 
@@ -181,7 +239,8 @@ class  ViewProfile extends Component<Props,State> {
         followUser(id2)
             .then((res) => {
                 console.log(this.state)
-                this.setState({isAlertOpen:true, follows:true})
+                this.getFollowed()
+                this.setState({isAlertOpen:true})
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
@@ -195,7 +254,8 @@ class  ViewProfile extends Component<Props,State> {
         unfollowUser(id)
             .then((res) => {
                 console.log(this.state)
-                this.setState({isAlertOpenUnfollow:true, follows:false})
+                this.getFollowed()
+                this.setState({isAlertOpenUnfollow:true})
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
@@ -213,6 +273,43 @@ class  ViewProfile extends Component<Props,State> {
             }
         )
             .catch((err) => this.setState({getDataError: 'An error occurred fetching profile data'}))
+    }
+
+    handlePostLike(id: string, id2: string) {
+        likePost(id2,id)
+            .then(() => {
+                this.getUserPosts(this.state.profile.id)
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404)
+                    console.log(err)
+
+            })
+
+
+    }
+
+    getUserPosts(id:string) {
+        getAllUserPosts(id)
+            .then((res) => {
+                console.log(res)
+                this.setState({posts:res})
+                console.log(this.state.posts)
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404)
+                    console.log(err)
+
+            })
+    }
+
+    getFollowed = () => {
+        getFollowed().then(res => {this.setState({followed: res.followed})
+
+
+            }
+        )
+
     }
 
 

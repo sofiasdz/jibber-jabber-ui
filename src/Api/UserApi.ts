@@ -63,9 +63,11 @@ export function unfollowUser(userId: string): Promise<any> {
     });
 }
 
-export function getFollows(): Promise<any> {
+export function getFollowed(): Promise<any> {
     return request({
         url: "/users/followed",
         method: 'GET',
     });
 }
+
+
