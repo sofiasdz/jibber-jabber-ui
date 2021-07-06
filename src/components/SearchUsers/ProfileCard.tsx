@@ -21,7 +21,6 @@ export type State = {
     userName: string,
     id: string,
     isAlertOpen:boolean,
-    follows:boolean,
     isAlertOpenUnfollow:boolean,
     followed:string[]
 
@@ -36,7 +35,6 @@ class  ProfileCard extends Component<Props,State> {
             id:'',
             userName:'usernamefalso',
             isAlertOpen:false,
-            follows:false,
             isAlertOpenUnfollow:false,
             followed:[]
 
@@ -50,7 +48,6 @@ class  ProfileCard extends Component<Props,State> {
     render() {
     let isAlertOpen= this.state.isAlertOpen;
     let isAlertOpenUnfollow= this.state.isAlertOpenUnfollow
-    let follows=this.state.follows;
         return(
             <CssBaseline>
                 <Grid
@@ -183,16 +180,6 @@ class  ProfileCard extends Component<Props,State> {
 
     }
 
-    setFollowed(){
-        if(this.state.followed.includes(this.props.profile.id)){
-            console.log("follows:true")
-            this.setState({follows:true})
-        } else {
-            console.log("follows:false")
-            this.setState({follows:false})
-        }
-        console.log(this.state.followed)
 
-    }
 }
 export default ProfileCard

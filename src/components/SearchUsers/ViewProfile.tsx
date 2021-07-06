@@ -4,7 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
-import {followUser, getCurrentUser, getUserInfo, unfollowUser, updateUser} from "../../Api/UserApi";
+import {followUser, getCurrentUser, getUserInfo, unfollowUser, getFollowed} from "../../Api/UserApi";
 import {Fab, Grid, TextField} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import CheckIcon from '@material-ui/icons/Check';
@@ -29,11 +29,11 @@ export type State = {
     userName: string,
     id: string,
     isAlertOpen: boolean,
-    follows:boolean,
     isAlertOpenUnfollow:boolean,
     profile:ProfileType,
     getDataError:string,
-    posts:PostType[]
+    posts:PostType[],
+    followed:string[]
 
 }
 
@@ -48,7 +48,6 @@ class  ViewProfile extends Component<Props,State> {
             userName:'usernamefalso',
             isAlertOpen: false,
             isAlertOpenUnfollow:false,
-            follows:false,
             getDataError:"",
             profile:{
                 id:'',
@@ -57,7 +56,8 @@ class  ViewProfile extends Component<Props,State> {
                 email:'',
                 nick:''
             },
-            posts:[]
+            posts:[],
+            followed:[]
 
         }
 
@@ -72,7 +72,6 @@ class  ViewProfile extends Component<Props,State> {
     render() {
         let isAlertOpen= this.state.isAlertOpen;
         let isAlertOpenUnfollow=this.state.isAlertOpenUnfollow;
-        let follows=this.state.follows;
 
         return(
             <CssBaseline>
@@ -84,8 +83,8 @@ class  ViewProfile extends Component<Props,State> {
                         </Grid>
                         <Grid item xs={6}>
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                    { !follows && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
-                                    { follows && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
+                                    {  !this.state.followed.includes(this.state.profile.id)  && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
+                                    { this.state.followed.includes(this.state.profile.id) && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
                                 </ButtonGroup>
                         </Grid>
 
@@ -214,6 +213,7 @@ class  ViewProfile extends Component<Props,State> {
         this.handleGetCurrentUser()
         this.getProfile(this.props.match.params.id )
         this.getUserPosts(this.props.match.params.id)
+        this.getFollowed()
     }
 
 
@@ -237,7 +237,8 @@ class  ViewProfile extends Component<Props,State> {
         followUser(id2)
             .then((res) => {
                 console.log(this.state)
-                this.setState({isAlertOpen:true, follows:true})
+                this.getFollowed()
+                this.setState({isAlertOpen:true})
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
@@ -251,7 +252,8 @@ class  ViewProfile extends Component<Props,State> {
         unfollowUser(id)
             .then((res) => {
                 console.log(this.state)
-                this.setState({isAlertOpenUnfollow:true, follows:false})
+                this.getFollowed()
+                this.setState({isAlertOpenUnfollow:true})
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
@@ -297,6 +299,15 @@ class  ViewProfile extends Component<Props,State> {
                     console.log(err)
 
             })
+    }
+
+    getFollowed = () => {
+        getFollowed().then(res => {this.setState({followed: res.followed})
+
+
+            }
+        )
+
     }
 
 
