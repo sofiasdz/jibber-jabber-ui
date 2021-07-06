@@ -84,8 +84,8 @@ class  SearchUsers extends Component<Props,State> {
                 <Box component="span" m={1} >
                     <React.Fragment>
                         {this.state.users.length !== 0 ?
-                                this.state.users.map((post,index) => (
-                                            <ProfileCard key={index} profile={post}  history={this.props.history} location={this.props.location} match={this.props.match}/>
+                                this.state.users.map((profile,index) => (
+                                            <ProfileCard key={index} profile={profile}  history={this.props.history} location={this.props.location} match={this.props.match}/>
                                             )):
                                 <span >No results!</span>
                         }

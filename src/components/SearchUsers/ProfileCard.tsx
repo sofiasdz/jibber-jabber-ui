@@ -101,8 +101,8 @@ class  ProfileCard extends Component<Props,State> {
                             <Grid item xs={12}>
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                                     <Button onClick={()=>this.handleViewProfile(this.props.profile.id)}>View Profile</Button>
-                                    { !follows&& <Button onClick={()=>this.handleFollow(this.props.profile.id)}> Follow </Button>}
-                                    { follows && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.props.profile.id)}> Unfollow </Button>}
+                                    { !this.state.followed.includes(this.props.profile.id) && <Button onClick={()=>this.handleFollow(this.props.profile.id)}> Follow </Button>}
+                                    { this.state.followed.includes(this.props.profile.id) && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.props.profile.id)}> Unfollow </Button>}
                                 </ButtonGroup>
                             </Grid>
                         </CardContent>
@@ -115,7 +115,7 @@ class  ProfileCard extends Component<Props,State> {
 
     componentDidMount() {
     this.handleGetCurrentUser()
-        this.setFollowed()
+    this.getFollowed()
 
     }
 
@@ -146,7 +146,9 @@ class  ProfileCard extends Component<Props,State> {
         followUser(id2)
             .then((res) => {
                 console.log(this.state)
-                this.setState({isAlertOpen:true, follows:true})
+                this.getFollowed()
+                this.setState({isAlertOpen:true})
+
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
@@ -160,7 +162,9 @@ class  ProfileCard extends Component<Props,State> {
         unfollowUser(id)
             .then((res) => {
                 console.log(this.state)
-                this.setState({isAlertOpenUnfollow:true, follows:false})
+                this.getFollowed()
+                this.setState({isAlertOpenUnfollow:true})
+
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
@@ -171,18 +175,23 @@ class  ProfileCard extends Component<Props,State> {
     }
 
     getFollowed = () => {
-        getFollowed().then(res => {this.setState({followed: res.followed})}
+        getFollowed().then(res => {this.setState({followed: res.followed})
+
+
+        }
         )
 
     }
 
     setFollowed(){
-        this.getFollowed()
         if(this.state.followed.includes(this.props.profile.id)){
+            console.log("follows:true")
             this.setState({follows:true})
         } else {
+            console.log("follows:false")
             this.setState({follows:false})
         }
+        console.log(this.state.followed)
 
     }
 }
