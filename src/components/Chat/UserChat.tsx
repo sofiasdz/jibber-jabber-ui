@@ -30,6 +30,7 @@ export type State = {
 
 class UserChat extends Component<Props,State> {
 
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -129,12 +130,19 @@ class UserChat extends Component<Props,State> {
 
     connect() {
         var socket = new SockJS('/chat');
-        var stompClient=Stomp.over(socket)
-        stompClient.connect({}, function() {
-            stompClient.subscribe('/topic/messages')
-        });
+        // var stompClient=Stomp.over(socket)
+        // this.setState( {stompClient:stompClient});
+        this.setState({stompClient:Stomp.over(socket)},this.subscribe);
         console.log("connected");
-        this.setState( {stompClient:stompClient});
+    }
+
+    subscribe(){
+        this.state.stompClient.connect({}, () => {
+            console.log("Subscribed!")
+            this.state.stompClient.subscribe('/topic/messages', function(message:any){
+                console.log(message);
+            })
+        })
     }
 
     disconnect() {
@@ -145,8 +153,8 @@ class UserChat extends Component<Props,State> {
     }
 
     sendMessage(message:string, from:string, to: string) {
-        this.state.stompClient.send("/chat", {},
-            JSON.stringify({'senderId':from, 'recipientId':to, 'body':message}));
+        console.log(this.state.stompClient)
+        this.state.stompClient.send("/conversation/chat", {}, JSON.stringify({'senderId':from, 'recipientId':to, 'body':message}));
         this.setState({message:"Type your message here..."})
     }
 
