@@ -31,5 +31,13 @@ module.exports = app => {
         })
     );
 
+    app.use(
+        "/conversation",
+        createProxyMiddleware ({
+            target: "http://localhost:8003",
+            changeOrigin: true
+        })
+    );
+
 
 };

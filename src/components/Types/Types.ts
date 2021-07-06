@@ -15,3 +15,15 @@ export type ProfileType ={
     email:string;
     bio:string;
 }
+
+export type MessageType={
+    senderId:string;
+    body:string;
+    time:string;
+}
+
+export type ConversationType={
+    senderId:string;
+    recipientId:string;
+    messages:MessageType[];
+}
