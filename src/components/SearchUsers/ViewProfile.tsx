@@ -73,6 +73,7 @@ class  ViewProfile extends Component<Props,State> {
         let isAlertOpen= this.state.isAlertOpen;
         let isAlertOpenUnfollow=this.state.isAlertOpenUnfollow;
 
+
         return(
             <CssBaseline>
             <Card>
@@ -85,6 +86,7 @@ class  ViewProfile extends Component<Props,State> {
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                                     {  !this.state.followed.includes(this.state.profile.id)  && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
                                     { this.state.followed.includes(this.state.profile.id) && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
+                                    <Button onClick={()=>this.handleMessage(this.state.profile.id)}>Message</Button>
                                 </ButtonGroup>
                         </Grid>
 
@@ -309,6 +311,13 @@ class  ViewProfile extends Component<Props,State> {
         )
 
     }
+
+
+    handleMessage(id: string) {
+        this.props.history.push('/dm/' + this.state.profile.id)
+
+    }
+
 
 
 }
