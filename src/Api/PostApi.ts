@@ -40,7 +40,7 @@ export function likePost(authorId: string,postId:string): Promise<any> {
     return request({
         url: "/posts/like",
         method: 'PUT',
-        body: JSON.stringify({'authorId':authorId,'postId': postId}),
+        body: JSON.stringify({'userId':authorId,'postId': postId}),
         headers: {'Content-Type': 'application/json'}
     });
 }

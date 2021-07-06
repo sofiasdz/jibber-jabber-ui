@@ -119,7 +119,7 @@ class  CreatePost extends Component<Props,State> {
                     {
                         this.state.posts.length !== 0 ?
                             this.state.posts.map((post, index) => (
-                                < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} >
+                                < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}}  key={post.id} >
                                     <CardContent>
                                         <Typography variant="subtitle2" component="p">
                                             {post.timeRecorded}
@@ -207,7 +207,7 @@ class  CreatePost extends Component<Props,State> {
  handlePostLike(id: string, id2: string) {
      likePost(id2,id)
          .then(() => {
-             //this.getPosts()
+             this.getPosts()
          })
          .catch((err) => {
              if (err.status === 401|| err.status===404)
