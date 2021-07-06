@@ -5,7 +5,7 @@ import {Grid} from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import {followUser, getCurrentUser, searchUser, unfollowUser} from "../../Api/UserApi";
+import {followUser, getCurrentUser, unfollowUser, getFollowed} from "../../Api/UserApi";
 import {ProfileType} from "../Types/Types";
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -22,7 +22,8 @@ export type State = {
     id: string,
     isAlertOpen:boolean,
     follows:boolean,
-    isAlertOpenUnfollow:boolean
+    isAlertOpenUnfollow:boolean,
+    followed:string[]
 
 }
 
@@ -36,7 +37,8 @@ class  ProfileCard extends Component<Props,State> {
             userName:'usernamefalso',
             isAlertOpen:false,
             follows:false,
-            isAlertOpenUnfollow:false
+            isAlertOpenUnfollow:false,
+            followed:[]
 
 
 
@@ -113,6 +115,7 @@ class  ProfileCard extends Component<Props,State> {
 
     componentDidMount() {
     this.handleGetCurrentUser()
+        this.setFollowed()
 
     }
 
@@ -164,6 +167,22 @@ class  ProfileCard extends Component<Props,State> {
                     console.log(err)
 
             })
+
+    }
+
+    getFollowed = () => {
+        getFollowed().then(res => {this.setState({followed: res.followed})}
+        )
+
+    }
+
+    setFollowed(){
+        this.getFollowed()
+        if(this.state.followed.includes(this.props.profile.id)){
+            this.setState({follows:true})
+        } else {
+            this.setState({follows:false})
+        }
 
     }
 }
