@@ -23,5 +23,13 @@ module.exports = app => {
         })
     );
 
+    app.use(
+        "/chat",
+        createProxyMiddleware ({
+            target: "http://localhost:8003",
+            changeOrigin: true
+        })
+    );
+
 
 };

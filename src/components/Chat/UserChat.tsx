@@ -7,6 +7,12 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import {getCurrentUser, getUserInfo} from "../../Api/UserApi";
 import {ProfileType} from "../Types/Types";
+import * as Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
+import Button from '@material-ui/core/Button';
 
 export type Props = RouteComponentProps<any> & {}
 
@@ -14,7 +20,9 @@ export type State = {
     userName: string,
     id: string,
     recieverProfile: ProfileType,
-    getDataError:string
+    getDataError:string,
+    stompClient:any,
+    message:string
 
 
 }
@@ -27,6 +35,7 @@ class UserChat extends Component<Props,State> {
         this.state = {
             id:'',
             userName:'usernamefalso',
+            stompClient: null,
             recieverProfile:{
                 id:'',
                 username:'',
@@ -34,7 +43,8 @@ class UserChat extends Component<Props,State> {
                 email:'',
                 nick:''
             },
-            getDataError:''
+            getDataError:'',
+            message:"Type your message here..."
 
 
         }
@@ -57,6 +67,24 @@ class UserChat extends Component<Props,State> {
                             <Typography color="textSecondary" gutterBottom>
                                 Chat with {this.state.recieverProfile.nick}
                             </Typography>
+
+                            <Grid item xs={12} >
+                                <TextField id="filled-search" label="Search field" type="search"  onChange={e =>this.setState({message:e.target.value}) }
+                                           variant="filled"
+                                           InputProps={{
+                                               startAdornment: (
+                                                   <InputAdornment position="start">
+                                                       <SearchIcon />
+                                                   </InputAdornment>
+                                               ),
+                                           }}/>
+
+                            </Grid>
+                            <Grid item xs={12} >
+                            <Button variant="contained" color="primary" onClick={()=> this.sendMessage(this.state.message,this.state.id,this.state.recieverProfile.id)}>
+                                Send
+                            </Button>
+                            </Grid>
                             <div>
                                 <Grid container spacing={3}></Grid>
                             </div>
@@ -69,6 +97,7 @@ class UserChat extends Component<Props,State> {
     }
 
     componentDidMount() {
+        this.connect()
         this.handleGetCurrentUser()
         this.getProfile(this.props.match.params.id )
     }
@@ -97,6 +126,30 @@ class UserChat extends Component<Props,State> {
 
 
     }
+
+    connect() {
+        var socket = new SockJS('/chat');
+        var stompClient=Stomp.over(socket)
+        stompClient.connect({}, function() {
+            stompClient.subscribe('/topic/messages')
+        });
+        console.log("connected");
+        this.setState( {stompClient:stompClient});
+    }
+
+    disconnect() {
+        if(this.state.stompClient != null) {
+            this.state.stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
+
+    sendMessage(message:string, from:string, to: string) {
+        this.state.stompClient.send("/chat", {},
+            JSON.stringify({'senderId':from, 'recipientId':to, 'body':message}));
+        this.setState({message:"Type your message here..."})
+    }
+
 }
 
 export default UserChat
