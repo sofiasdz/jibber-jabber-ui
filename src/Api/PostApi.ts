@@ -26,11 +26,29 @@ export function getAllPosts(): Promise<any> {
     });
 }
 
+
+export function getTimeline(followed:string[]): Promise<any> {
+    return request({
+        url:"/posts/timeline",
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({followed:followed}),
+    });
+}
+
 export function likePost(authorId: string,postId:string): Promise<any> {
     return request({
         url: "/posts/like",
         method: 'PUT',
         body: JSON.stringify({'authorId':authorId,'postId': postId}),
+        headers: {'Content-Type': 'application/json'}
+    });
+}
+
+export function getAllUserPosts(id:string): Promise<any> {
+    return request({
+        url:"/posts/author/"+id,
+        method: 'GET',
         headers: {'Content-Type': 'application/json'}
     });
 }

@@ -9,6 +9,13 @@ import {Fab, Grid, TextField} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import CheckIcon from '@material-ui/icons/Check';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import Box from "@material-ui/core/Box";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import {createPost, getAllUserPosts, likePost} from "../../Api/PostApi";
+import {PostType} from "../Types/Types";
 
 
 
@@ -25,7 +32,8 @@ export type State = {
     id: string,
     getDataError: string,
     updateMode:boolean,
-    isAlertOpen: boolean
+    isAlertOpen: boolean,
+    posts:PostType[]
 
 }
 
@@ -43,7 +51,8 @@ export type State = {
              email:'emailsalfo',
              getDataError:'',
              updateMode: false,
-             isAlertOpen: false
+             isAlertOpen: false,
+             posts:[]
 
 
          }
@@ -61,6 +70,7 @@ export type State = {
          let isAlertOpen= this.state.isAlertOpen
 
         return(
+            <CssBaseline>
         <Card>
             <CardContent>
                 <Grid container spacing={3}>
@@ -159,6 +169,55 @@ export type State = {
             </Grid>
             </CardContent>
         </Card>
+        <Box component="span" m={1} >
+
+            <React.Fragment>
+                <CssBaseline />
+                <Container style={ {alignItems:"center"}}>
+                    <Typography variant="h6" >
+                        My Posts
+                    </Typography>
+                    {
+                        this.state.posts.length !== 0 ?
+                            this.state.posts.map((post, index) => (
+                                < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} >
+                                    <CardContent>
+                                        <Typography variant="subtitle2" component="p">
+                                            {post.timeRecorded}
+                                        </Typography>
+                                        <Typography variant="subtitle1" component="h2">
+                                            {post.author}
+                                        </Typography>
+                                        <Typography variant="h6" component="p">
+                                            {post.body}
+                                        </Typography>
+                                        <Grid container spacing={0} style={{marginTop:10}}>
+                                            <Grid item xs={3}>
+                                                <Button variant="outlined" color="primary" onClick={()=>this.handlePostLike(post.id,this.state.id)} >
+                                                    <ThumbUpAltIcon></ThumbUpAltIcon>
+                                                </Button>
+                                            </Grid>
+                                            <Grid item xs={3}>
+                                                <Typography variant="h6" component="p" style={{marginRight:10}}>
+                                                    {post.likes}
+                                                </Typography>
+                                            </Grid>
+
+                                        </Grid>
+
+
+
+                                    </CardContent>
+                                </Card>
+
+                            )) :
+                            <span className={'empty-message'}>No posts yet!</span>
+                    }
+                </Container>
+            </React.Fragment>
+        </Box>
+
+    </CssBaseline>
         );
     }
 
@@ -173,7 +232,7 @@ export type State = {
         getUserInfo(id).then((res) => {
                 console.log(res)
                 this.setState({userName: res.username, email: res.email, nick: res.nick, bio: res.bio})
-            console.log(this.state)
+                this.getUserPosts()
             }
         )
             .catch((err) => this.setState({getDataError: 'An error occurred fetching profile data'}))
@@ -197,7 +256,7 @@ export type State = {
      }
 
 
-     private handleProfileUpdate() {
+        handleProfileUpdate() {
          updateUser(this.state.nick,this.state.bio)
              .then((res) => {
                  console.log(res)
@@ -209,6 +268,34 @@ export type State = {
 
              })
 
+     }
+
+     handlePostLike(id: string, id2: string) {
+         likePost(id2,id)
+             .then(() => {
+                 this.getUserPosts()
+             })
+             .catch((err) => {
+                 if (err.status === 401|| err.status===404)
+                     console.log(err)
+
+             })
+
+
+     }
+
+     getUserPosts() {
+         getAllUserPosts(this.state.id)
+             .then((res) => {
+                 console.log(res)
+                 this.setState({posts:res})
+                 console.log(this.state.posts)
+             })
+             .catch((err) => {
+                 if (err.status === 401|| err.status===404)
+                     console.log(err)
+
+             })
      }
  }
 

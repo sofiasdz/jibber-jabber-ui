@@ -7,9 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
-import {createPost, getAllPosts, likePost} from "../../Api/PostApi";
+import {createPost, getAllPosts, getTimeline, likePost} from "../../Api/PostApi";
 import {Grid} from "@material-ui/core";
-import {getCurrentUser} from "../../Api/UserApi";
+import {getCurrentUser, getFollowed} from "../../Api/UserApi";
 import {Props} from "../UserProfile/Profile";
 import {render} from "react-dom";
 import {PostType} from "../Types/Types";
@@ -27,6 +27,7 @@ export type State = {
   userName:string,
   posts:PostType[],
     isAlertOpen:boolean,
+  followed:string[]
 
 }
 
@@ -41,7 +42,8 @@ class  CreatePost extends Component<Props,State> {
             isLoggerIn: false,
             body:'',
             posts:[],
-            isAlertOpen:false
+            isAlertOpen:false,
+            followed:[]
 
 
         }
@@ -148,7 +150,7 @@ class  CreatePost extends Component<Props,State> {
                                 </Card>
 
                             )) :
-                            <span className={'empty-message'}>This topic has no posts yet!</span>
+                            <span className={'empty-message'}>No posts yet!</span>
                     }
                 </Container>
             </React.Fragment>
@@ -161,7 +163,12 @@ class  CreatePost extends Component<Props,State> {
 
 
     getPosts = () => {
-        getAllPosts().then(res => this.setState({posts: res}))
+        getTimeline(this.state.followed).then(res => this.setState({posts: res}))
+    }
+
+    getFollowed = () => {
+        getFollowed().then(res => this.setState({followed: res.followed}))
+        this.getPosts()
     }
   handleCreatePosts(body: string) {
         createPost(this.state.id,this.state.userName,body)
@@ -178,7 +185,6 @@ class  CreatePost extends Component<Props,State> {
     }
 
     componentDidMount() {
-        this.getPosts()
         this.handleGetCurrentUser()
     }
 
@@ -186,6 +192,7 @@ class  CreatePost extends Component<Props,State> {
         getCurrentUser()
             .then((res) => {
                 this.setState({userName: res.user, id:res.userId,isLoggerIn:true})
+                this.getFollowed()
                 console.log(this.state)
             })
             .catch((err) => {
