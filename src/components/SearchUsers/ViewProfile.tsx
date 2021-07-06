@@ -16,6 +16,7 @@ import Button from "@material-ui/core/Button";
 
 
 
+
 export type Props = RouteComponentProps<any> & {}
 
 
@@ -27,14 +28,13 @@ export type State = {
     follows:boolean,
     isAlertOpenUnfollow:boolean,
     profile:ProfileType,
-    getDataError:string
+    getDataError:string,
+
 
 }
 
 
 class  ViewProfile extends Component<Props,State> {
-
-
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -51,6 +51,7 @@ class  ViewProfile extends Component<Props,State> {
                 email:'',
                 nick:''
             }
+
 
         }
 
@@ -78,6 +79,7 @@ class  ViewProfile extends Component<Props,State> {
                                 <ButtonGroup color="primary" aria-label="outlined primary button group">
                                     { !follows && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
                                     { follows && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
+                                    <Button onClick={()=>this.handleMessage(this.state.profile.id)}>Message</Button>
                                 </ButtonGroup>
                         </Grid>
 
@@ -212,6 +214,13 @@ class  ViewProfile extends Component<Props,State> {
         )
             .catch((err) => this.setState({getDataError: 'An error occurred fetching profile data'}))
     }
+
+
+    handleMessage(id: string) {
+        this.props.history.push('/dm/' + this.state.profile.id)
+
+    }
+
 
 
 }
