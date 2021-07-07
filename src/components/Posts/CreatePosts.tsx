@@ -1,23 +1,20 @@
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import {RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
-import {createPost, getAllPosts, getTimeline, likePost} from "../../Api/PostApi";
+import {createPost, deletePost, getAllPosts, getTimeline, likePost} from "../../Api/PostApi";
 import {Grid} from "@material-ui/core";
 import {getCurrentUser, getFollowed} from "../../Api/UserApi";
 import {Props} from "../UserProfile/Profile";
-import {render} from "react-dom";
 import {PostType} from "../Types/Types";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import {Alert, AlertTitle} from "@material-ui/lab";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 export type State = {
@@ -27,7 +24,8 @@ export type State = {
   userName:string,
   posts:PostType[],
     isAlertOpen:boolean,
-  followed:string[]
+  followed:string[],
+   isDeleteAlert:boolean
 
 }
 
@@ -43,7 +41,8 @@ class  CreatePost extends Component<Props,State> {
             body:'',
             posts:[],
             isAlertOpen:false,
-            followed:[]
+            followed:[],
+            isDeleteAlert:false
 
 
         }
@@ -53,6 +52,7 @@ class  CreatePost extends Component<Props,State> {
     render() {
         let isLoggedIn=this.state.isLoggerIn;
         let isAlertOpen=this.state.isAlertOpen;
+        let isDeleteAlert=this.state.isDeleteAlert;
         return (
             <CssBaseline >
                 <Grid
@@ -116,6 +116,16 @@ class  CreatePost extends Component<Props,State> {
 
 
                     }
+                    { isDeleteAlert &&
+                    <div>
+                        <Alert severity="warning" onClose={() => {this.setState({isAlertOpen:false})}}>
+                            <AlertTitle>Success</AlertTitle>
+                            Your post was deleted successfully — <strong>Bye bye!</strong>
+                        </Alert>
+                    </div>
+
+
+                    }
                     {
                         this.state.posts.length !== 0 ?
                             this.state.posts.map((post, index) => (
@@ -141,6 +151,11 @@ class  CreatePost extends Component<Props,State> {
                                                     {post.likes}
                                                 </Typography>
                                             </Grid>
+                                            { this.state.userName===post.author && <Grid item xs={3}>
+                                                <Button variant="contained" color="secondary" onClick={()=>this.handlePostDelete(post.id)}>
+                                                    <DeleteIcon></DeleteIcon>
+                                                </Button>
+                                            </Grid>}
 
                                         </Grid>
 
@@ -218,6 +233,20 @@ class  CreatePost extends Component<Props,State> {
 
     }
 
+   handlePostDelete(id: string) {
+       console.log("empezo el metodo")
+        deletePost(id)
+            .then((res) => {
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404)
+                    console.log(err)
+
+            })
+       this.setState({isDeleteAlert:true})
+       this.getPosts()
+        
+    }
 }
 
 
