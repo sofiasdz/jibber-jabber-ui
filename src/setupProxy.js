@@ -34,10 +34,11 @@ module.exports = app => {
     app.use(
         "/conversation",
         createProxyMiddleware ({
-            target: "http://localhost:8003",
+            target: "http://localhost:8001",
             changeOrigin: true
         })
     );
+
 
 
 };

@@ -53,3 +53,11 @@ export function getAllUserPosts(id:string): Promise<any> {
     });
 }
 
+export function deletePost(postId:string): Promise<any> {
+    return request({
+        url: "/posts/delete/"+postId,
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'}
+    });
+}
+

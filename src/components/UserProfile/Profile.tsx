@@ -14,8 +14,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import {createPost, getAllUserPosts, likePost} from "../../Api/PostApi";
+import {createPost, deletePost, getAllUserPosts, likePost} from "../../Api/PostApi";
 import {PostType} from "../Types/Types";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 
 
@@ -33,7 +34,8 @@ export type State = {
     getDataError: string,
     updateMode:boolean,
     isAlertOpen: boolean,
-    posts:PostType[]
+    posts:PostType[],
+    isDeleteAlert:boolean
 
 }
 
@@ -52,7 +54,8 @@ export type State = {
              getDataError:'',
              updateMode: false,
              isAlertOpen: false,
-             posts:[]
+             posts:[],
+             isDeleteAlert:false
 
 
          }
@@ -67,7 +70,8 @@ export type State = {
 
     render() {
          let updateMode= this.state.updateMode;
-         let isAlertOpen= this.state.isAlertOpen
+         let isAlertOpen= this.state.isAlertOpen;
+        let isDeleteAlert=this.state.isDeleteAlert;
 
         return(
             <CssBaseline>
@@ -98,6 +102,16 @@ export type State = {
                                 Your Profile Was Updated Successfully — <strong>check it out!</strong>
                             </Alert>
                         </div>
+
+
+                    }
+                    { isDeleteAlert &&
+                    <div>
+                        <Alert severity="warning" onClose={() => {this.setState({isAlertOpen:false})}}>
+                            <AlertTitle>Success</AlertTitle>
+                           Your post was deleted successfully — <strong>Bye bye!</strong>
+                        </Alert>
+                    </div>
 
 
                     }
@@ -202,6 +216,12 @@ export type State = {
                                                     {post.likes}
                                                 </Typography>
                                             </Grid>
+                                            { this.state.userName===post.author &&
+                                            <Grid item xs={3}>
+                                                <Button variant="contained" color="secondary" onClick={()=>this.handlePostDelete(post.id)}>
+                                                    <DeleteIcon></DeleteIcon>
+                                                </Button>
+                                            </Grid>}
 
                                         </Grid>
 
@@ -296,6 +316,21 @@ export type State = {
                      console.log(err)
 
              })
+     }
+
+
+     handlePostDelete(id: string) {
+         deletePost(id)
+             .then(() => {
+                 this.setState({isDeleteAlert:true})
+                 this.getUserPosts()
+             })
+             .catch((err) => {
+                 if (err.status === 401|| err.status===404)
+                     console.log(err)
+
+             })
+
      }
  }
 
