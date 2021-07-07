@@ -8,14 +8,16 @@ import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
 import {registerUser} from "../../Api/UserApi";
+import {Alert, AlertTitle} from "@material-ui/lab";
 
-
-function Register(){
+export type Props = RouteComponentProps<any> & {}
+function Register(props:Props){
     const [password, setPassword] = useState("password");
     const [email, setEmail] = useState("email");
     const [username, setUsername] = useState("username");
     const [nick, setNick] = useState("nick");
     const [isDisabled,setDisabled]=useState(true)
+    const [isAlertOpen,setAlert]=useState(false)
 
     const regex = new RegExp("^(?=.*\\d)(?=.*[a-zA-Z])([a-zA-Z0-9]+){8,}$");
 
@@ -50,6 +52,14 @@ function Register(){
 
                 </form>
             </CardContent>
+            { isAlertOpen&& <div>
+                <Alert severity="error" onClose={() => setAlert(false)}>
+                    <AlertTitle>Error!</AlertTitle>
+                    Either <strong> your selected username</strong> is already taken or someone already registered
+                    with <strong>your e-mail</strong>!
+                </Alert>
+            </div>
+            }
         </Card>
     );
 
@@ -59,11 +69,14 @@ function Register(){
     function  handleRegister(email:string,username:string,password:string,nick:string) {
         registerUser(email,username, password,nick)
             .then((res) => {
+               props.history.push('/')
                 console.log(res)
             })
             .catch((err) => {
-                if (err.status === 401|| err.status===404)
+                if (err.status === 401|| err.status===404||err.status==400)
+                    setAlert(true)
                     console.log(err)
+
 
             })
     }
