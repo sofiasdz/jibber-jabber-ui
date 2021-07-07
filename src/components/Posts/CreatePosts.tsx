@@ -118,7 +118,7 @@ class  CreatePost extends Component<Props,State> {
                     }
                     { isDeleteAlert &&
                     <div>
-                        <Alert severity="warning" onClose={() => {this.setState({isAlertOpen:false})}}>
+                        <Alert severity="warning" onClose={() => {this.setState({isDeleteAlert:false})}}>
                             <AlertTitle>Success</AlertTitle>
                             Your post was deleted successfully — <strong>Bye bye!</strong>
                         </Alert>
@@ -234,11 +234,14 @@ class  CreatePost extends Component<Props,State> {
     }
 
    handlePostDelete(id: string) {
-       console.log("empezo el metodo")
-        deletePost(id).then(r => {})
+        deletePost(id).catch((err) => {
+            if (err.status === 401|| err.status===404)
+                console.log(err)
+        }).then(r => {
+            this.getPosts();
+        })
        this.setState({isDeleteAlert:true})
-       this.getPosts()
-        
+
     }
 }
 
