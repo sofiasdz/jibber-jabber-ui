@@ -33,11 +33,11 @@ export function getUserInfo(id: string): Promise<any> {
     });
 }
 
-export function updateUser(nick: string, bio:string): Promise<any> {
+export function updateUser(nick: string, bio:string,password:string): Promise<any> {
     return request({
         url: "/users/update",
         method: 'PUT',
-        body: JSON.stringify({'nick': nick, 'bio': bio })
+        body: JSON.stringify({'nick': nick, 'bio': bio,'password':password })
     });
 }
 
