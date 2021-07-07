@@ -31,6 +31,7 @@ export type State = {
     nick: string,
     bio: string,
     id: string,
+    password:string,
     getDataError: string,
     updateMode:boolean,
     isAlertOpen: boolean,
@@ -51,6 +52,7 @@ export type State = {
              nick:'nickfalso',
              bio:'biofalsa',
              email:'emailsalfo',
+             password:"password",
              getDataError:'',
              updateMode: false,
              isAlertOpen: false,
@@ -173,7 +175,8 @@ export type State = {
                     id="standard-password-input"
                     label="Password"
                     type="password"
-                    autoComplete="current-password"
+                    value={this.state.password}
+                    onChange={e => this.setState( {password:e.target.value})}
                     style={{marginLeft:10}}
                     />
                         </Grid>
@@ -277,7 +280,7 @@ export type State = {
 
 
         handleProfileUpdate() {
-         updateUser(this.state.nick,this.state.bio)
+         updateUser(this.state.nick,this.state.bio,this.state.password)
              .then((res) => {
                  console.log(res)
                  this.setState({updateMode:false,isAlertOpen:true})
