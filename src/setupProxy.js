@@ -11,14 +11,14 @@ module.exports = app => {
     app.use(
         "/login",
         createProxyMiddleware ({
-            target: "http://localhost:8002",
+            target: "jibber-jabber-auth-db:8002",
             changeOrigin: true
         })
     );
     app.use(
         "/users",
         createProxyMiddleware ({
-            target: "http://localhost:8002",
+            target: "jibber-jabber-auth-db:8002",
             changeOrigin: true
         })
     );
