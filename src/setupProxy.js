@@ -34,7 +34,7 @@ module.exports = app => {
     app.use(
         "/conversation",
         createProxyMiddleware ({
-            target: "http://localhost:8001",
+            target: "http://localhost:8003",
             changeOrigin: true
         })
     );
