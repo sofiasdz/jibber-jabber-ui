@@ -158,7 +158,7 @@ class UserChat extends Component<Props,State> {
         getCurrentUser()
             .then((res) => {
                 console.log(res)
-                this.setState({id:res.userId})
+                this.setState({id:res.userId,userName:res.username})
 
             })
             .catch((err) => {

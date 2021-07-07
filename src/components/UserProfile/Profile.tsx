@@ -323,16 +323,9 @@ export type State = {
 
 
      handlePostDelete(id: string) {
-         deletePost(id)
-             .then(() => {
-                 this.setState({isDeleteAlert:true})
-                 this.getUserPosts()
-             })
-             .catch((err) => {
-                 if (err.status === 401|| err.status===404)
-                     console.log(err)
-
-             })
+         deletePost(id).then(() => {})
+         this.setState({isDeleteAlert:true})
+         this.getUserPosts()
 
      }
  }

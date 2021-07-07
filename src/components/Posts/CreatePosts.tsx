@@ -235,14 +235,7 @@ class  CreatePost extends Component<Props,State> {
 
    handlePostDelete(id: string) {
        console.log("empezo el metodo")
-        deletePost(id)
-            .then((res) => {
-            })
-            .catch((err) => {
-                if (err.status === 401|| err.status===404)
-                    console.log(err)
-
-            })
+        deletePost(id).then(r => {})
        this.setState({isDeleteAlert:true})
        this.getPosts()
         
