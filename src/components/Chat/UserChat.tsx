@@ -171,7 +171,7 @@ class UserChat extends Component<Props,State> {
     }
 
     connect() {
-        var socket = new SockJS('/messages/chat');
+        var socket = new SockJS('/chat');
         // var stompClient=Stomp.over(socket)
         // this.setState( {stompClient:stompClient});
         this.setState({stompClient:Stomp.over(socket)},this.subscribe);
@@ -200,7 +200,7 @@ class UserChat extends Component<Props,State> {
 
     sendMessage(message:string, from:string, to: string) {
         console.log(this.state.stompClient)
-        this.state.stompClient.send("/messages/conversation/chat", {}, JSON.stringify({'senderId':from, 'recipientId':to, 'body':message}));
+        this.state.stompClient.send("/conversation/chat", {}, JSON.stringify({'senderId':from, 'recipientId':to, 'body':message}));
         this.getChat()
         this.setState({message:""})
     }
