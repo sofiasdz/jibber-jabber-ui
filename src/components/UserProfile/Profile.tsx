@@ -36,7 +36,8 @@ export type State = {
     updateMode:boolean,
     isAlertOpen: boolean,
     posts:PostType[],
-    isDeleteAlert:boolean
+    isDeleteAlert:boolean,
+    disabled:boolean,
 
 }
 
@@ -52,12 +53,13 @@ export type State = {
              nick:'nickfalso',
              bio:'biofalsa',
              email:'emailsalfo',
-             password:"password",
+             password:"",
              getDataError:'',
              updateMode: false,
              isAlertOpen: false,
              posts:[],
-             isDeleteAlert:false
+             isDeleteAlert:false,
+             disabled:false
 
 
          }
@@ -171,14 +173,16 @@ export type State = {
                 <TextField  style={{marginLeft:10}} label="Bio" value={this.state.bio} onChange={e => this.setState( {bio:e.target.value})}/>
                         </Grid>
                         <Grid item xs={12}>
-                    <TextField
-                    id="standard-password-input"
-                    label="Password"
-                    type="password"
-                    value={this.state.password}
-                    onChange={e => this.setState( {password:e.target.value})}
-                    style={{marginLeft:10}}
-                    />
+                            { !this.state.disabled && <TextField    type="password" label="Type New Password:"  value={this.state.password} onChange={e => this.analyze(e.target.value)} />}
+                            { this.state.disabled && <TextField
+                                error
+
+                                label="Error"
+                                type="password"
+                                helperText="Password has to be 10 characters long and include numbers"
+                                value={this.state.password}
+                                onChange={e => this.analyze(e.target.value)}
+                            />}
                         </Grid>
                     </div>
                 }
@@ -326,6 +330,15 @@ export type State = {
          deletePost(id).then(() => {})
          this.setState({isDeleteAlert:true})
          this.getUserPosts()
+
+     }
+
+
+     analyze(password:string){
+         const regex = new RegExp("^(?=.*\\d)(?=.*[a-zA-Z])([a-zA-Z0-9]+){8,}$");
+         this.setState({password:password})
+         console.log(regex.test(password))
+         this.setState({disabled:!regex.test(password)})
 
      }
  }
