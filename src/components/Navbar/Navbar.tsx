@@ -60,13 +60,11 @@ function NavbarJJ() {
                             </div>
                         </Grid>
                         <Grid item xs={3}>
-                            <Button onClick={() => navigateToRegister()} variant="contained" style={{marginTop: 10}}>Register</Button>
+
                         </Grid>
                         <Grid item xs={3}>
 
-                            <Button variant="contained" color="primary" onClick={() => navigateToLogin()}  style={{marginTop: 10}}>
-                                Login
-                            </Button>
+
 
                         </Grid>
                         <Grid item xs={3}>
