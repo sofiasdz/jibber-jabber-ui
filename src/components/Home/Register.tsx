@@ -12,10 +12,10 @@ import {Alert, AlertTitle} from "@material-ui/lab";
 
 export type Props = RouteComponentProps<any> & {}
 function Register(props:Props){
-    const [password, setPassword] = useState("password");
-    const [email, setEmail] = useState("email");
-    const [username, setUsername] = useState("username");
-    const [nick, setNick] = useState("nick");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [nick, setNick] = useState("");
     const [isDisabled,setDisabled]=useState(true)
     const [isAlertOpen,setAlert]=useState(false)
 
@@ -32,25 +32,27 @@ function Register(props:Props){
                 </Typography>
                 <form  noValidate autoComplete="off">
                     <div>
-                        <TextField required id="standard-required" label="Required"  value={email} onChange={e => setEmail(e.target.value)} />
-                        <TextField required id="standard-required" label="Required"  value={username} onChange={e => setUsername(e.target.value)}/>
-                        { !isDisabled && <TextField required id="standard-required" label="Required"  value={password} onChange={e => analyze(e.target.value)} />}
+                        <TextField  id="standard-required" label="E-mail"  value={email} onChange={e => setEmail(e.target.value)} />
+                        <TextField  id="standard-required" label="Usename"  value={username} onChange={e => setUsername(e.target.value)}/>
+                        { !isDisabled && <TextField required id="standard-required" label="Password"  value={password} onChange={e => analyze(e.target.value)} />}
                         { isDisabled && <TextField
                             error
                             id="standard-error-helper-text"
-                            label="Error"
+                            label="Password"
                             helperText="Password has to be 10 characters long and include numbers"
                             value={password}
                             onChange={e => analyze(e.target.value)}
                         />}
-                        <TextField required id="standard-required" label="Required"  value={nick} onChange={e => setNick(e.target.value)} />
+                        <TextField  id="standard-required" label="Nick"  value={nick} onChange={e => setNick(e.target.value)} />
                         <Button variant="contained" color="primary"  disabled={isDisabled} onClick={()=>handleRegister(email,username,password,nick)}>
                             Register
                         </Button>
                     </div>
 
                 </form>
-                <li><Link to={'/'} className="nav-link"> Already have an account?<strong> Login here</strong> </Link></li>
+                <div style={{marginTop:30}}>
+                <li><Link to={'/'} className="nav-link" > Already have an account?<strong> Login here</strong> </Link></li>
+                </div>
             </CardContent>
             { isAlertOpen&& <div>
                 <Alert severity="error" onClose={() => setAlert(false)}>

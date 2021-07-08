@@ -23,8 +23,8 @@ export type State = {
 
 
 function Login(props:Props){
-    const [password, setPassword] = useState("password");
-    const [username, setUsername] = useState("username");
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const[isAlertOpen,setIsAlert]=useState(false);
 
 
@@ -39,15 +39,17 @@ function Login(props:Props){
                 </Typography>
                 <form  noValidate autoComplete="off">
                     <div>
-                        <TextField required id="standard-required" label="Required"  value={username} onChange={e => setUsername(e.target.value)}/>
-                        <TextField required id="standard-required" label="Required"  value={password} onChange={e => setPassword(e.target.value)} />
+                        <TextField  id="standard-required" label="Username"  value={username} onChange={e => setUsername(e.target.value)}/>
+                        <TextField  id="standard-required" label="Password"  value={password} onChange={e => setPassword(e.target.value)} />
                         <Button variant="contained" color="primary" onClick={()=>handleLogin(username,password)}>
                             Login
                         </Button>
                     </div>
 
                 </form>
-                <li><Link to={'/register'} className="nav-link"> Dont have an account? <strong>Register here</strong></Link></li>
+                <div style={{marginTop:30}}>
+                <li><Link to={'/register'} className="nav-link" style={{marginTop:30}}> Dont have an account? <strong>Register here</strong></Link></li>
+                </div>
             </CardContent>
 
             { isAlertOpen && <div>

@@ -82,18 +82,22 @@ export type State = {
         <Card>
             <CardContent>
                 <Grid container spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                         <Typography style={{marginBottom:30}}> Your Profile</Typography>
                     </Grid>
-                    <Button variant="contained" color="secondary" onClick={() => this.doLogout()}  style={{marginTop: 10}}>
-                        Logout
-                    </Button>
+                    <Grid item xs={3}>
+                        <Button variant="contained" color="secondary" onClick={() => this.doLogout()}  style={{marginTop: 10}}>
+                            Logout
+                        </Button>
+                    </Grid>
                     { !updateMode &&
                     <Grid item xs={6}>
                 <Fab color="secondary" aria-label="edit" onClick={()=>this.setState({updateMode:true})}>
                     <EditIcon />
                 </Fab>
                     </Grid>
+
+
                     }
                     { updateMode &&
                     <Grid item xs={6}>
