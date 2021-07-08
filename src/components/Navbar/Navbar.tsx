@@ -5,21 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import {Box, Grid} from "@material-ui/core";
-import {getCurrentUser} from "../../Api/UserApi";
+import {getCurrentUser, logout} from "../../Api/UserApi";
 import {Props} from "../UserProfile/Profile";
 import { useHistory } from "react-router-dom";
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -104,10 +92,7 @@ function NavbarJJ() {
     }
 
     function handleLogout() {
-        console.log(document.cookie)
-        document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        console.log(document.cookie)
-      setIsLoggedIn(false)
+        doLogout()
 
     }
 
@@ -130,6 +115,19 @@ function NavbarJJ() {
             })
     }
 
+
+    function doLogout(){
+        logout()
+            .then((res) => {
+                setUserName('')
+                setId('')
+                setIsLoggedIn(false)
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404||err.status==400||err.status===403)
+                    console.log(err)
+            })
+    }
 
 
     }

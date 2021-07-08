@@ -67,11 +67,11 @@ function Login(props:Props){
             .then((res) => {
                console.log(res)
                 handleGetCurrentUser()
-                props.history.push('/createPosts')
+
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404||err.status===400||err.status===403)
-                    setIsAlert(true)
+
                     console.log(err)
 
             })
@@ -82,12 +82,11 @@ function Login(props:Props){
         getCurrentUser()
             .then((res) => {
                 console.log(res)
-                window.localStorage.setItem('author', res.user);
-                window.localStorage.setItem('authorId', res.userId);
+                props.history.push('/createPosts')
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
-
+                    setIsAlert(true)
                     console.log(err)
 
             })
