@@ -64,11 +64,11 @@ function NavbarJJ() {
                             <Button onClick={() => navigateToRegister()} variant="contained" style={{marginTop: 10}}>Register</Button>
                         </Grid>
                         <Grid item xs={3}>
-                            {isLoggedIn &&
+                            {!isLoggedIn &&
                             <Button variant="contained" color="primary" onClick={() => navigateToLogin()}  style={{marginTop: 10}}>
                                 Login
                             </Button>}
-                            {!isLoggedIn && <Button variant="contained" color="secondary" onClick={() => handleLogout()}  style={{marginTop: 10}}>
+                            {isLoggedIn && <Button variant="contained" color="secondary" onClick={() => handleLogout()}  style={{marginTop: 10}}>
                                 Logout
                             </Button>}
 

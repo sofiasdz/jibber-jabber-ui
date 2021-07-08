@@ -39,7 +39,6 @@ function Register(props:Props){
                             error
                             id="standard-error-helper-text"
                             label="Error"
-                            defaultValue="Hello World"
                             helperText="Password has to be 10 characters long and include numbers"
                             value={password}
                             onChange={e => analyze(e.target.value)}
