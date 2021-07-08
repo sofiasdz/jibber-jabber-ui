@@ -49,10 +49,10 @@ export type State = {
          super(props);
          this.state = {
              id:'',
-             userName:'usernamefalso',
-             nick:'nickfalso',
-             bio:'biofalsa',
-             email:'emailsalfo',
+             userName:'',
+             nick:'',
+             bio:'',
+             email:'',
              password:"",
              getDataError:'',
              updateMode: false,
@@ -78,21 +78,38 @@ export type State = {
         let isDeleteAlert=this.state.isDeleteAlert;
 
         return(
+            <Box component="span" m={1} >
+
+                <React.Fragment>
+                    <CssBaseline />
+                    <Container style={ {alignItems:"center"}}>
             <CssBaseline>
-        <Card>
+        <Card style={{ marginLeft:220,width:700,backgroundPosition:"center"}}>
             <CardContent>
                 <Grid container spacing={3}>
                     <Grid item xs={3}>
-                        <Typography style={{marginBottom:30}}> Your Profile</Typography>
+                        <Grid container spacing={3}>
+                            <Grid item xs={3}>
+                                <div >
+                                    {/*<ForumIcon style={{width:100,marginTop:10}}></ForumIcon>*/}
+                                    <img style={{ width:50}} src="https://img.icons8.com/fluent/96/000000/origami.png"/>
+                                </div>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Typography  style={{marginLeft:20,width:400,marginTop:10}} variant="h6" color="textPrimary" gutterBottom>
+                                    Your Profile
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item xs={3}>
-                        <Button variant="contained" color="secondary" onClick={() => this.doLogout()}  style={{marginTop: 10}}>
+                        <Button style={{marginLeft:270,marginTop: 18}} variant="contained" color="secondary" onClick={() => this.doLogout()}  >
                             Logout
                         </Button>
-                    </Grid>
+                    </Grid >
                     { !updateMode &&
                     <Grid item xs={6}>
-                <Fab color="secondary" aria-label="edit" onClick={()=>this.setState({updateMode:true})}>
+                <Fab style={{marginLeft:250,marginTop: 10}} color="secondary" aria-label="edit" onClick={()=>this.setState({updateMode:true})}>
                     <EditIcon />
                 </Fab>
                     </Grid>
@@ -101,7 +118,7 @@ export type State = {
                     }
                     { updateMode &&
                     <Grid item xs={6}>
-                        <Fab color="primary" aria-label="edit" onClick={()=>this.handleProfileUpdate()}>
+                        <Fab style={{marginLeft:250,marginTop: 10}} color="primary" aria-label="edit" onClick={()=>this.handleProfileUpdate()}>
                             <CheckIcon />
                         </Fab>
                     </Grid>
@@ -126,7 +143,7 @@ export type State = {
 
 
                     }
-                        <Grid item xs={12}>
+                        <Grid item xs={12} >
                         <TextField
                            value={this.state.userName}
                             label="Username"
@@ -194,6 +211,7 @@ export type State = {
                     </div>
                 }
 
+
             </Grid>
             </CardContent>
         </Card>
@@ -202,7 +220,7 @@ export type State = {
             <React.Fragment>
                 <CssBaseline />
                 <Container style={ {alignItems:"center"}}>
-                    <Typography variant="h6" >
+                    <Typography variant="h6" gutterBottom >
                         My Posts
                     </Typography>
                     {
@@ -245,13 +263,19 @@ export type State = {
                                 </Card>
 
                             )) :
-                            <span className={'empty-message'}>No posts yet!</span>
+                            <span > <Container style={ {alignItems:"center"}}>
+                                    <Typography  style={{marginLeft:110}}variant="h6" color="textSecondary" gutterBottom>No Posts yet!</Typography>
+                                     </Container></span>
                     }
                 </Container>
             </React.Fragment>
         </Box>
 
     </CssBaseline>
+                    </Container>
+                </React.Fragment>
+            </Box>
+
         );
     }
 

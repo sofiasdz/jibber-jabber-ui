@@ -77,8 +77,8 @@ function NavbarJJ() {
 
                         </Grid>
                         <Grid item xs={3}>
-                            <Button color="inherit" style={{marginLeft:250,marginTop:7}}  onClick={() => handleGoToProfile()}>
-                                <PermIdentityIcon fontSize={"large"}></PermIdentityIcon>
+                            <Button color="inherit" style={{marginLeft:250,marginTop:13}}  onClick={() => handleGoToProfile()}>
+                                <PermIdentityIcon fontSize={"large"} ></PermIdentityIcon>
                                 <Typography variant="h6" color="secondary" className={classes.title}>
                                 </Typography>
                             </Button>
