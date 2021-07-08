@@ -85,12 +85,12 @@ function Login(props:Props){
         getCurrentUser()
             .then((res) => {
                 console.log(res)
-                props.history.push('/createPosts')
+                props.history.push('/createPost')
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
-                    setIsAlert(true)
-                    console.log(err)
+                   handleGetCurrentUser()
+
 
             })
     }
