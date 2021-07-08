@@ -69,5 +69,11 @@ export function getFollowed(): Promise<any> {
         method: 'GET',
     });
 }
+export function logout(): Promise<any> {
+    return request({
+        url: "/auth/expiresession",
+        method: 'GET',
+    });
+}
 
 
