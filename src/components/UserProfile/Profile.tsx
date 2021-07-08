@@ -222,7 +222,6 @@ export type State = {
                         </Alert>
                     </div>
 
-
                     }
                     {
                         this.state.posts.length !== 0 ?
@@ -359,14 +358,13 @@ export type State = {
 
 
      handlePostDelete(id: string) {
-         deletePost(id).then(() => {
-             this.setState({isDeleteAlert:true})
-             this.getUserPosts()
-         }).catch((err) => {
-             if (err.status === 401|| err.status===404||err.status==400||err.status===403)
+         deletePost(id).catch((err) => {
+             if (err.status === 401|| err.status===404)
                  console.log(err)
+         }).then(r => {
+             this.getUserPosts();
          })
-
+         this.setState({isDeleteAlert:true})
 
      }
 
