@@ -12,6 +12,7 @@ import {getCurrentUser, searchUser,getFollowed} from "../../Api/UserApi";
 import {ProfileType} from "../Types/Types";
 import Box from "@material-ui/core/Box";
 import ProfileCard from "./ProfileCard";
+import Container from "@material-ui/core/Container";
 
 
 export type Props = RouteComponentProps<any> & { }
@@ -60,13 +61,13 @@ class  SearchUsers extends Component<Props,State> {
                     alignItems="center"
                     justify="center"
                 >
-                    <Card style={{width:1000,backgroundPosition:"center"}}>
+                    <Card style={{ width:700,backgroundPosition:"center"}}>
                         <CardContent >
-                            <Typography color="textSecondary" gutterBottom>
-                                Explore
+                            <Typography style={{marginBottom:20}} variant="h6" color="textPrimary" gutterBottom>
+                               Search by <strong>username</strong>
                             </Typography>
                             <Grid item xs={12} >
-                                <TextField id="filled-search" label="Search field" type="search"  onChange={e =>this.handleSearchChange(e) }
+                                <TextField  style={{width:400,marginLeft:125}} id="filled-search" label="Search" type="search"  onChange={e =>this.handleSearchChange(e) }
                                            variant="filled"
                                            InputProps={{
                                                startAdornment: (
@@ -87,7 +88,13 @@ class  SearchUsers extends Component<Props,State> {
                                 this.state.users.map((profile,index) => (
                                             <ProfileCard key={index} profile={profile}  history={this.props.history} location={this.props.location} match={this.props.match}/>
                                             )):
-                                <span >No results!</span>
+                                <span >
+                                     <Container style={ {alignItems:"center"}}>
+                                    <Typography  style={{marginLeft:300}}variant="h6" color="textSecondary" gutterBottom> No results!</Typography>
+                                     </Container>
+
+
+                                </span>
                         }
                     </React.Fragment>
                 </Box>

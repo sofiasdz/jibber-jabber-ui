@@ -15,6 +15,7 @@ import Box from "@material-ui/core/Box";
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import {Alert, AlertTitle} from "@material-ui/lab";
 import DeleteIcon from '@material-ui/icons/Delete';
+import {Link} from "react-router-dom";
 
 
 export type State = {
@@ -66,7 +67,7 @@ class  CreatePost extends Component<Props,State> {
             <Card style={{width:1000,backgroundPosition:"center"}}>
                 <CardContent >
 
-                    <Typography color="textSecondary" gutterBottom>
+                    <Typography variant="h6" color="textPrimary" gutterBottom>
                         ¿Whats on your mind?
                     </Typography>
                     {isLoggedIn &&
@@ -94,7 +95,8 @@ class  CreatePost extends Component<Props,State> {
                             }
                     {!isLoggedIn &&
                     <Typography color="textSecondary" gutterBottom>
-                        you need to log in before u can post in Jibber Jabber
+                        You need to log in before you can post in <strong>Jibber Jabber  </strong>
+                        <Link to={'/'} className="nav-link" ><strong> Login here</strong> </Link>
                     </Typography>
 
                     }
@@ -165,7 +167,11 @@ class  CreatePost extends Component<Props,State> {
                                 </Card>
 
                             )) :
-                            <span className={'empty-message'}>No posts yet!</span>
+                            <span >
+                                 <Container style={ {alignItems:"center"}}>
+                                    <Typography  style={{marginLeft:110}}variant="h6" color="textSecondary" gutterBottom> No Posts yet!</Typography>
+                                     </Container>
+                            </span>
                     }
                 </Container>
             </React.Fragment>

@@ -10,6 +10,7 @@ import ViewProfile from "./components/SearchUsers/ViewProfile";
 import UserChat from "./components/Chat/UserChat";
 import NavbarJJ from "./components/Navbar/Navbar";
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Typography from "@material-ui/core/Typography";
 
 
 class App extends Component  {
@@ -24,13 +25,21 @@ class App extends Component  {
             <h2>Welcome to Jibber Jabber</h2>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
               <ul className="navbar-nav mr-auto">
-                <Breadcrumbs aria-label="breadcrumb">
-                  <Link to={'/createPost'}  color="textPrimary"> Your Timeline</Link>
-                  <Link to={'/searchUsers'} color="textPrimary" >Search for friends</Link>
+                <Breadcrumbs style={{marginTop:35}} aria-label="breadcrumb">
+                  <Link to={'/createPost'}  color="textPrimary">
+                    <Typography variant="h6"  gutterBottom>
+                    Your Timeline
+                    </Typography>
+                  </Link>
+                  <Link to={'/searchUsers'} color="textPrimary" >
+                    <Typography variant="h6"  gutterBottom>
+                    Search for friends
+                    </Typography>
+                    </Link>
                 </Breadcrumbs>
               </ul>
             </nav>
-            <hr/>
+
             <Switch>
               <Route exact path='/' component={Login}/>
               <Route path='/userProfile' component={Profile}/>

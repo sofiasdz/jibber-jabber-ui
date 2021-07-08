@@ -74,22 +74,36 @@ class UserChat extends Component<Props,State> {
                     {
                         this.state.messages.length !== 0 ?
                             this.state.messages.map((m, index) => (
-                                < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} >
+                                <div>
+                                { m.senderId===this.state.recieverProfile.id? < Card style={{marginLeft:30,marginTop:50,marginBottom:50,width:1000}} >
                                     <CardContent>
                                         <Typography variant="subtitle2" component="p">
                                             {m.time}
                                         </Typography>
-                                            { m.senderId===this.state.recieverProfile.id? <Typography variant="subtitle2" component="p">{this.state.recieverProfile.username} </Typography>:
-                                            <Typography variant="subtitle2" component="p">  {this.state.userName}</Typography>}
+                                            <Typography variant="subtitle2" component="p">{this.state.recieverProfile.username} </Typography>
                                         <Typography variant="subtitle1" component="h2">
                                             {m.body}
                                         </Typography>
 
                                     </CardContent>
-                                </Card>
+                                </Card>:
+                            < Card style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} >
+                                <CardContent>
+                                    <Typography variant="subtitle2" component="p">
+                                        {m.time}
+                                    </Typography>
+                                    <Typography variant="subtitle2" component="p">{this.state.userName} </Typography>
+                                    <Typography variant="subtitle1" component="h2">
+                                        {m.body}
+                                    </Typography>
+
+                                </CardContent>
+                            </Card>
+                                }
+                                </div>
 
                             )) :
-                            <span className={'empty-message'}>No posts yet!</span>
+                            <span className={'empty-message'}>No Messages yet!</span>
                     }
                 </Container>
             </React.Fragment>
@@ -110,7 +124,7 @@ class UserChat extends Component<Props,State> {
                                 </Typography>
 
                                 <Grid item xs={12} >
-                                    <TextField id="filled-search" label="Message"   value={message} onChange={e =>this.setState({message:e.target.value}) }
+                                    <TextField multiline rows={2}  style={{width:900}} label="Message"   value={message} onChange={e =>this.setState({message:e.target.value}) }
                                                variant="filled"
                                              />
 

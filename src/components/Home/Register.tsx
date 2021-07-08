@@ -9,6 +9,10 @@ import {Link, RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
 import {registerUser} from "../../Api/UserApi";
 import {Alert, AlertTitle} from "@material-ui/lab";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import {Grid} from "@material-ui/core";
 
 export type Props = RouteComponentProps<any> & {}
 function Register(props:Props){
@@ -25,25 +29,41 @@ function Register(props:Props){
 
 
     return (
+        <Box component="span" m={1} >
+
+            <React.Fragment>
+                <CssBaseline />
+                <Container style={ {alignItems:"center"}}>
         <Card >
             <CardContent>
-                <Typography  color="textSecondary" gutterBottom>
-                    Register
-                </Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs={3}>
+                        <div >
+                            {/*<ForumIcon style={{width:100,marginTop:10}}></ForumIcon>*/}
+                            <img style={{ marginLeft:400,width:50}} src="https://img.icons8.com/fluent/96/000000/origami.png"/>
+                        </div>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Typography  style={{width:400,marginTop:10, marginLeft:150}} variant="h6" color="textPrimary" gutterBottom>
+                            Register <strong> Jibber Jabber</strong>
+                        </Typography>
+                    </Grid>
+                </Grid>
                 <form  noValidate autoComplete="off">
                     <div>
-                        <TextField  id="standard-required" label="E-mail"  value={email} onChange={e => setEmail(e.target.value)} />
-                        <TextField  id="standard-required" label="Usename"  value={username} onChange={e => setUsername(e.target.value)}/>
-                        { !isDisabled && <TextField required id="standard-required" label="Password"  value={password} onChange={e => analyze(e.target.value)} />}
+                        <TextField  style={{marginLeft:30,marginRight:30}} id="standard-required" label="E-mail"  value={email} onChange={e => setEmail(e.target.value)} />
+                        <TextField style={{marginLeft:30,marginRight:30}}  id="standard-required" label="Usename"  value={username} onChange={e => setUsername(e.target.value)}/>
+                        { !isDisabled && <TextField style={{marginLeft:30,marginRight:30}} required id="standard-required" label="Password"  value={password} onChange={e => analyze(e.target.value)} />}
                         { isDisabled && <TextField
                             error
+                            style={{marginLeft:30,marginRight:30}}
                             id="standard-error-helper-text"
                             label="Password"
                             helperText="Password has to be 10 characters long and include numbers"
                             value={password}
                             onChange={e => analyze(e.target.value)}
                         />}
-                        <TextField  id="standard-required" label="Nick"  value={nick} onChange={e => setNick(e.target.value)} />
+                        <TextField  style={{marginLeft:30,marginRight:30}} id="standard-required" label="Nick"  value={nick} onChange={e => setNick(e.target.value)} />
                         <Button variant="contained" color="primary"  disabled={isDisabled} onClick={()=>handleRegister(email,username,password,nick)}>
                             Register
                         </Button>
@@ -51,7 +71,11 @@ function Register(props:Props){
 
                 </form>
                 <div style={{marginTop:30}}>
-                <li><Link to={'/'} className="nav-link" > Already have an account?<strong> Login here</strong> </Link></li>
+                <Link to={'/'}  >
+                    <Typography variant="subtitle1"  gutterBottom>
+                    Already have an account?<strong> Login here</strong>
+                    </Typography>
+                    </Link>
                 </div>
             </CardContent>
             { isAlertOpen&& <div>
@@ -63,6 +87,9 @@ function Register(props:Props){
             </div>
             }
         </Card>
+                </Container>
+            </React.Fragment>
+        </Box>
     );
 
 
