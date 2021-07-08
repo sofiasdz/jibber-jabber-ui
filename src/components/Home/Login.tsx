@@ -88,7 +88,7 @@ function Login(props:Props){
                 props.history.push('/createPost')
             })
             .catch((err) => {
-                if (err.status === 401|| err.status===404)
+                if (err.status === 401|| err.status===404||err.status===403)
                    handleGetCurrentUser()
 
 
