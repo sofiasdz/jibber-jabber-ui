@@ -133,16 +133,7 @@ export type State = {
 
 
                     }
-                    { isDeleteAlert &&
-                    <div>
-                        <Alert severity="warning" onClose={() => {this.setState({isAlertOpen:false})}}>
-                            <AlertTitle>Success</AlertTitle>
-                           Your post was deleted successfully — <strong>Bye bye!</strong>
-                        </Alert>
-                    </div>
 
-
-                    }
                         <Grid item xs={12} >
                         <TextField
                            value={this.state.userName}
@@ -223,6 +214,16 @@ export type State = {
                     <Typography variant="h6" gutterBottom >
                         My Posts
                     </Typography>
+                    { isDeleteAlert &&
+                    <div>
+                        <Alert style={{marginLeft:115,marginTop:50,marginBottom:50,width:1000}} severity="warning" onClose={() => {this.setState({isDeleteAlert:false})}}>
+                            <AlertTitle>Success</AlertTitle>
+                            Your post was deleted successfully — <strong>Bye bye!</strong>
+                        </Alert>
+                    </div>
+
+
+                    }
                     {
                         this.state.posts.length !== 0 ?
                             this.state.posts.map((post, index) => (
@@ -358,9 +359,14 @@ export type State = {
 
 
      handlePostDelete(id: string) {
-         deletePost(id).then(() => {})
-         this.setState({isDeleteAlert:true})
-         this.getUserPosts()
+         deletePost(id).then(() => {
+             this.setState({isDeleteAlert:true})
+             this.getUserPosts()
+         }).catch((err) => {
+             if (err.status === 401|| err.status===404||err.status==400||err.status===403)
+                 console.log(err)
+         })
+
 
      }
 
