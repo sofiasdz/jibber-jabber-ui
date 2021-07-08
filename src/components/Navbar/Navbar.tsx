@@ -1,14 +1,23 @@
-import React, {useState} from 'react';
+import React, {Component, useState} from 'react';
 import {createMuiTheme, createStyles, makeStyles, Theme, ThemeProvider} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import {Box, Grid} from "@material-ui/core";
-import {useHistory} from "react-router";
-import {RouteComponentProps} from "react-router-dom";
-import {PostType} from "../Types/Types";
+import {getCurrentUser} from "../../Api/UserApi";
+import {Props} from "../UserProfile/Profile";
+import { useHistory } from "react-router-dom";
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,69 +41,97 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export type Props = RouteComponentProps<any> & {}
+function NavbarJJ() {
 
 
 
 
 
-const image1 = require("../../Resources/images/map.png");
+        const classes = useStyles();
+        const [isLoggedIn,setIsLoggedIn]=useState(false)
+        const [userName,setUserName]=useState('')
+        const [id,setId]=useState('')
+        let history=useHistory();
+        handleGetCurrentUser()
 
-export default function Navbar(props:Props) {
-    const classes = useStyles();
-    const history = useHistory();
+    return (
+            <div className={classes.root}>
+                <AppBar>
+                    <Grid container justify="center" spacing={2}>
+                        <Grid item xs={3}>
+                            <div className={classes.menuButton} aria-label="menu" onClick={() =>history.push("/")}>
+                                <Typography variant="h6" style={{marginTop: 1, marginBottom: 20, marginLeft:30}}
+                                            className={classes.title}>
+                                    <Box fontWeight="fontWeightBold" style={{width: 200}}>
+                                        Jibber Jabber
+                                    </Box>
+                                </Typography>
+                            </div>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button onClick={() => navigateToRegister()} variant="contained" style={{marginTop: 10}}>Register</Button>
+                        </Grid>
+                        <Grid item xs={3}>
+                            {isLoggedIn &&
+                            <Button variant="contained" color="primary" onClick={() => navigateToLogin()}  style={{marginTop: 10}}>
+                                Login
+                            </Button>}
+                            {!isLoggedIn && <Button variant="contained" color="secondary" onClick={() => handleLogout()}  style={{marginTop: 10}}>
+                                Logout
+                            </Button>}
 
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
-    const [username, setUsername] = useState("username");
-    const [id, setId] = useState("id");
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Button color="inherit">
+                                <PermIdentityIcon fontSize={"large"}></PermIdentityIcon>
+                                <Typography variant="h6" color="secondary" className={classes.title}>
+                                    <Box>
+                                        {userName}
+                                    </Box>
+                                </Typography>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </AppBar>
+            </div>
+        );
+
 
     function navigateToLogin() {
-        props.history.push("/")
+       history.push('/')
     }
 
     function handleLogout() {
-        document.cookie = "authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        navigateToLogin()
+        console.log(document.cookie)
+        document.cookie = "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        console.log(document.cookie)
+      setIsLoggedIn(false)
+
     }
 
-    return (
+    function navigateToRegister() {
+      history.push("/register")
+    }
 
-        <div className={classes.root}>
-            <AppBar>
-                <Grid container  justify="center"  spacing={2}>
-                    <Grid item  xs={3} >
-                        <div className={classes.menuButton} aria-label="menu" onClick={() => history.push("/")}>
-                            <Typography variant="h6" style={{marginTop:1, marginBottom:20}} color="secondary"  className={classes.title} >
-                                <Box fontWeight="fontWeightBold" style={{width: 200}}>
-                                   Jibber Jabber
-                                </Box>
-                            </Typography>
-                        </div>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Button variant="contained">Register</Button>
-                    </Grid>
-                    <Grid item xs={3}>
-                        { !isLoggedIn && <Button variant="contained" color="primary" onClick={()=>navigateToLogin()}>
-                            Login
-                        </Button>}
-                        { isLoggedIn && <Button variant="contained" color="secondary" onClick={()=>handleLogout()}>
-                            Logout
-                        </Button>}
+    function handleGetCurrentUser(){
+        getCurrentUser()
+            .then((res) => {
+            setUserName(res.user)
+             setId(res.userId)
+             setIsLoggedIn(true)
+            })
+            .catch((err) => {
+                if (err.status === 401|| err.status===404||err.status==400||err.status===403)
+                    console.log(err)
+                setIsLoggedIn(false)
 
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Button color="inherit" >
-                            <PermIdentityIcon fontSize={"large"}></PermIdentityIcon>
-                            <Typography variant="h6"  color="secondary"  className={classes.title} >
-                                <Box >
-                                    {username}
-                                </Box>
-                            </Typography>
-                        </Button>
-                    </Grid>
-                </Grid>
-            </AppBar>
-        </div>
-    );
-}
+            })
+    }
+
+
+
+    }
+    export default NavbarJJ
+
+
+
