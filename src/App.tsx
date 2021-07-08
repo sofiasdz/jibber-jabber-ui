@@ -1,19 +1,27 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import Login from "./components/Home/Login";
 import Register from "./components/Home/Register"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Link, RouteComponentProps} from "react-router-dom";
 
 import CreatePost from "./components/Posts/CreatePosts";
 import Profile from "./components/UserProfile/Profile";
 import SearchUsers from "./components/SearchUsers/SearchUsers";
 import ViewProfile from "./components/SearchUsers/ViewProfile";
 import UserChat from "./components/Chat/UserChat";
+import NavbarJJ from "./components/Navbar/Navbar";
+import {useHistory} from "react-router";
+import {State} from "./components/SearchUsers/ProfileCard";
 
-class App extends React.Component  {
+
+class App extends Component  {
+
+
   render() {
+
     return (
         <Router>
+          <NavbarJJ  ></NavbarJJ>
           <div>
             <h2>Welcome to Jibber Jabber</h2>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
