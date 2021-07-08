@@ -54,6 +54,10 @@ function NavbarJJ() {
         let history=useHistory();
         handleGetCurrentUser()
 
+    function handleGoToProfile() {
+        history.push('/userProfile')
+    }
+
     return (
             <div className={classes.root}>
                 <AppBar>
@@ -82,12 +86,10 @@ function NavbarJJ() {
 
                         </Grid>
                         <Grid item xs={3}>
-                            <Button color="inherit">
+                            <Button color="inherit"  onClick={() => handleGoToProfile()}>
                                 <PermIdentityIcon fontSize={"large"}></PermIdentityIcon>
                                 <Typography variant="h6" color="secondary" className={classes.title}>
-                                    <Box>
-                                        {userName}
-                                    </Box>
+
                                 </Typography>
                             </Button>
                         </Grid>
