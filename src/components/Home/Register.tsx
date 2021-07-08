@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import {RouteComponentProps} from 'react-router-dom';
+import {Link, RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
 import {registerUser} from "../../Api/UserApi";
 import {Alert, AlertTitle} from "@material-ui/lab";
@@ -50,6 +50,7 @@ function Register(props:Props){
                     </div>
 
                 </form>
+                <li><Link to={'/'} className="nav-link"> Already have an account?<strong> Login here</strong> </Link></li>
             </CardContent>
             { isAlertOpen&& <div>
                 <Alert severity="error" onClose={() => setAlert(false)}>

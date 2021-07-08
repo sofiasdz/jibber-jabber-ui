@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import {RouteComponentProps} from 'react-router-dom';
+import {Link, RouteComponentProps} from 'react-router-dom';
 import React, {Component, useState} from 'react'
 import {getCurrentUser, loginUser} from "../../Api/UserApi";
 import {Alert, AlertTitle} from "@material-ui/lab";
@@ -47,6 +47,7 @@ function Login(props:Props){
                     </div>
 
                 </form>
+                <li><Link to={'/register'} className="nav-link"> Dont have an account? <strong>Register here</strong></Link></li>
             </CardContent>
 
             { isAlertOpen && <div>

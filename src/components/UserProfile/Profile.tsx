@@ -4,7 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {RouteComponentProps} from 'react-router-dom';
 import React, {Component} from 'react'
-import {getCurrentUser, getUserInfo, updateUser} from "../../Api/UserApi";
+import {getCurrentUser, getUserInfo, logout, updateUser} from "../../Api/UserApi";
 import {Fab, Grid, TextField} from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import CheckIcon from '@material-ui/icons/Check';
@@ -85,6 +85,9 @@ export type State = {
                     <Grid item xs={6}>
                         <Typography style={{marginBottom:30}}> Your Profile</Typography>
                     </Grid>
+                    <Button variant="contained" color="secondary" onClick={() => this.doLogout()}  style={{marginTop: 10}}>
+                        Logout
+                    </Button>
                     { !updateMode &&
                     <Grid item xs={6}>
                 <Fab color="secondary" aria-label="edit" onClick={()=>this.setState({updateMode:true})}>
@@ -340,6 +343,17 @@ export type State = {
          console.log(regex.test(password))
          this.setState({disabled:!regex.test(password)})
 
+     }
+
+        doLogout(){
+         logout()
+             .then((res) => {
+                this.props.history.push('/')
+             })
+             .catch((err) => {
+                 if (err.status === 401|| err.status===404||err.status==400||err.status===403)
+                     console.log(err)
+             })
      }
  }
 

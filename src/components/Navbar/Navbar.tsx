@@ -36,11 +36,10 @@ function NavbarJJ() {
 
 
         const classes = useStyles();
-        const [isLoggedIn,setIsLoggedIn]=useState(false)
         const [userName,setUserName]=useState('')
         const [id,setId]=useState('')
         let history=useHistory();
-        handleGetCurrentUser()
+
 
     function handleGoToProfile() {
         history.push('/userProfile')
@@ -64,20 +63,16 @@ function NavbarJJ() {
                             <Button onClick={() => navigateToRegister()} variant="contained" style={{marginTop: 10}}>Register</Button>
                         </Grid>
                         <Grid item xs={3}>
-                            {!isLoggedIn &&
+
                             <Button variant="contained" color="primary" onClick={() => navigateToLogin()}  style={{marginTop: 10}}>
                                 Login
-                            </Button>}
-                            {isLoggedIn && <Button variant="contained" color="secondary" onClick={() => handleLogout()}  style={{marginTop: 10}}>
-                                Logout
-                            </Button>}
+                            </Button>
 
                         </Grid>
                         <Grid item xs={3}>
                             <Button color="inherit"  onClick={() => handleGoToProfile()}>
                                 <PermIdentityIcon fontSize={"large"}></PermIdentityIcon>
                                 <Typography variant="h6" color="secondary" className={classes.title}>
-
                                 </Typography>
                             </Button>
                         </Grid>
@@ -91,43 +86,14 @@ function NavbarJJ() {
        history.push('/')
     }
 
-    function handleLogout() {
-        doLogout()
-
-    }
 
     function navigateToRegister() {
       history.push("/register")
     }
 
-    function handleGetCurrentUser(){
-        getCurrentUser()
-            .then((res) => {
-            setUserName(res.user)
-             setId(res.userId)
-             setIsLoggedIn(true)
-            })
-            .catch((err) => {
-                if (err.status === 401|| err.status===404||err.status==400||err.status===403)
-                    console.log(err)
-                setIsLoggedIn(false)
-
-            })
-    }
 
 
-    function doLogout(){
-        logout()
-            .then((res) => {
-                setUserName('')
-                setId('')
-                setIsLoggedIn(false)
-            })
-            .catch((err) => {
-                if (err.status === 401|| err.status===404||err.status==400||err.status===403)
-                    console.log(err)
-            })
-    }
+
 
 
     }
