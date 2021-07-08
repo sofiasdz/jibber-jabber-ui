@@ -75,19 +75,31 @@ class  ViewProfile extends Component<Props,State> {
 
 
         return(
+            <Box component="span" m={1} >
+                <React.Fragment>
+                    <Container style={ {alignItems:"center"}}>
             <CssBaseline>
-            <Card>
-                <CardContent>
+            <Card style={{ marginLeft:220,width:700,backgroundPosition:"center"}}>
+                <CardContent style={ { alignItems:"center"}}>
                     <Grid container spacing={3}>
-                        <Grid item xs={6}>
-                            <Typography variant="h5" style={{marginBottom:30}}><strong>{this.state.profile.nick}'s Profile</strong></Typography>
+                        <Grid container spacing={3}>
+                        <Grid item xs={3}>
+                            <div >
+                                {/*<ForumIcon style={{width:100,marginTop:10}}></ForumIcon>*/}
+                                <img style={{ width:50}} src="https://img.icons8.com/fluent/96/000000/origami.png"/>
+                            </div>
+                        </Grid>
+                            <Grid item xs={3}>
+                            <Typography variant="h5" style={{marginBottom:30,marginTop:10, width:300}}><strong>{this.state.profile.nick}'s Profile</strong></Typography>
+
                         </Grid>
                         <Grid item xs={6}>
-                                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                <ButtonGroup color="primary" aria-label="outlined primary button group" style={{marginTop:10, marginLeft:100}}>
                                     {  !this.state.followed.includes(this.state.profile.id)  && <Button onClick={()=>this.handleFollow(this.state.profile.id)}> Follow </Button>}
                                     { this.state.followed.includes(this.state.profile.id) && <Button color={"secondary"} onClick={()=>this.handleUnfollow(this.state.profile.id)}> Unfollow </Button>}
                                     <Button onClick={()=>this.handleMessage(this.state.profile.id)}>Message</Button>
                                 </ButtonGroup>
+                        </Grid>
                         </Grid>
 
                         { isAlertOpen &&
@@ -165,7 +177,7 @@ class  ViewProfile extends Component<Props,State> {
             <React.Fragment>
                 <CssBaseline />
                 <Container style={ {alignItems:"center"}}>
-                    <Typography variant="h6" >
+                    <Typography variant="h6" gutterBottom style={{marginLeft:70}}>
                         {this.state.profile.nick}'s Posts
                     </Typography>
                     {
@@ -189,7 +201,7 @@ class  ViewProfile extends Component<Props,State> {
                                                 </Button>
                                             </Grid>
                                             <Grid item xs={3}>
-                                                <Typography variant="h6" component="p" style={{marginRight:10}}>
+                                                <Typography variant="h6" component="p" style={{marginRight:10}} gutterBottom>
                                                     {post.likes}
                                                 </Typography>
                                             </Grid>
@@ -202,12 +214,17 @@ class  ViewProfile extends Component<Props,State> {
                                 </Card>
 
                             )) :
-                            <span className={'empty-message'}>No posts yet!</span>
+                            <span ><Container style={ {alignItems:"center"}}>
+                                    <Typography  style={{marginLeft:110}}variant="h6" color="textSecondary" gutterBottom>No Posts yet!</Typography>
+                                     </Container></span>
                     }
                 </Container>
             </React.Fragment>
         </Box>
           </CssBaseline>
+                    </Container>
+                </React.Fragment>
+            </Box>
         );
     }
 
