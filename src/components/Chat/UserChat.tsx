@@ -27,6 +27,7 @@ export type State = {
     stompClient:any,
     message:string,
     messages:MessageType[],
+    disabled:boolean
 
 
 }
@@ -50,7 +51,8 @@ class UserChat extends Component<Props,State> {
             },
             getDataError:'',
             message:"",
-            messages:[]
+            messages:[],
+            disabled:true
 
 
         }
@@ -108,19 +110,13 @@ class UserChat extends Component<Props,State> {
                                 </Typography>
 
                                 <Grid item xs={12} >
-                                    <TextField id="filled-search" label="Search field" type="search"  value={message} onChange={e =>this.setState({message:e.target.value}) }
+                                    <TextField id="filled-search" label="Message"   value={message} onChange={e =>this.setState({message:e.target.value}) }
                                                variant="filled"
-                                               InputProps={{
-                                                   startAdornment: (
-                                                       <InputAdornment position="start">
-                                                           <SearchIcon />
-                                                       </InputAdornment>
-                                                   ),
-                                               }}/>
+                                             />
 
                                 </Grid>
                                 <Grid item xs={12} >
-                                    <Button variant="contained" color="primary" onClick={()=> this.sendMessage(this.state.message,this.state.id,this.state.recieverProfile.id)}>
+                                    <Button variant="contained" color="primary" disabled={this.state.disabled} onClick={()=> this.sendMessage(this.state.message,this.state.id,this.state.recieverProfile.id)}>
                                         Send
                                     </Button>
                                 </Grid>
@@ -145,10 +141,9 @@ class UserChat extends Component<Props,State> {
 
     getProfile = (id:string) => {
         getUserInfo(id).then((res) => {
-                console.log(res)
                 this.setState({recieverProfile:res})
                 this.getChat()
-                console.log(this.state)
+
             }
         )
             .catch((err) => this.setState({getDataError: 'An error occurred fetching profile data'}))
@@ -157,13 +152,12 @@ class UserChat extends Component<Props,State> {
     handleGetCurrentUser(){
         getCurrentUser()
             .then((res) => {
-                console.log(res)
                 this.setState({id:res.userId,userName:res.username})
 
             })
             .catch((err) => {
                 if (err.status === 401|| err.status===404)
-                    console.log(err)
+                {}
 
             })
 
@@ -175,12 +169,12 @@ class UserChat extends Component<Props,State> {
         // var stompClient=Stomp.over(socket)
         // this.setState( {stompClient:stompClient});
         this.setState({stompClient:Stomp.over(socket)},this.subscribe);
-        console.log("connected");
     }
 
     subscribe(){
         this.state.stompClient.connect({}, () => {
-            console.log("Subscribed!")
+            this.setState({disabled:false})
+
             this.state.stompClient.subscribe('/topic/messages', (message: any) =>{
                 this.setMessages(JSON.parse(message.body))
             })
@@ -195,11 +189,10 @@ class UserChat extends Component<Props,State> {
         if(this.state.stompClient != null) {
             this.state.stompClient.disconnect();
         }
-        console.log("Disconnected");
+
     }
 
     sendMessage(message:string, from:string, to: string) {
-        console.log(this.state.stompClient)
         this.state.stompClient.send("/conversation/chat", {}, JSON.stringify({'senderId':from, 'recipientId':to, 'body':message}));
         this.getChat()
         this.setState({message:""})
@@ -210,12 +203,11 @@ class UserChat extends Component<Props,State> {
     getChat(){
         getChat(this.state.id,this.state.recieverProfile.id)
             .then((res) => {
-                console.log(res)
                 this.setState({messages:res.messages})
             })
             .catch((err) => {
-                if (err.status === 401|| err.status===404)
-                    console.log(err)
+                if (err.status === 401|| err.status===404){}
+
 
             })
     }
