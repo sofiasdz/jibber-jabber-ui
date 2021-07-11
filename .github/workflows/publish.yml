@@ -22,3 +22,11 @@ jobs:
         run: |
           docker build . -f Dockerfile --tag ghcr.io/sofiasdz/jibber-jabber-ui-dev:latest
           docker push ghcr.io/sofiasdz/jibber-jabber-ui-dev:latest
+
+      - name: Deploy
+        uses: fifsky/ssh-action@master
+        with:
+          command: ~/jj/jibber-jabber-infrastructure/start-jibber-jabber-dev.sh
+          host: ${{ secrets.VM_IP_DEV }}
+          user: ${{ secrets.VM_USER_DEV }}
+          key: ${{ secrets.VM_KEY_DEV }}
