@@ -1,14 +1,17 @@
-# build environment
-FROM node:12.13.0-alpine as build
+FROM node:13.12.0-alpine as build
 WORKDIR /app
-# ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json yarn.lock ./
-RUN npm install --silent
-COPY . /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+COPY . ./
 RUN npm run build
 
 # production environment
-FROM nginx:1.16.0-alpine
+FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE  3000 80
+# new
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 3000 80
 CMD ["nginx", "-g", "daemon off;"]
