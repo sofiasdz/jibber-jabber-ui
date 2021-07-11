@@ -5,7 +5,6 @@ FROM node:10-alpine as builder
 COPY package.json ./
 COPY package-lock.json ./
 # Install the dependencies and make the folder
-RUN  mv ./node_modules ./jibber-jabber-ui
 RUN npm install --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 RUN npm run build
