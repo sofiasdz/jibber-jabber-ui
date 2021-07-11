@@ -2,10 +2,13 @@
 FROM node:10-alpine as builder
 
 # copy the package.json to install dependencies
-COPY package.json yarn.lock ./
-
+COPY package.json ./
+COPY package-lock.json ./
 # Install the dependencies and make the folder
-RUN yarn install && mkdir /jj-ui-ingsis && mv ./node_modules ./jibber-jabber-ui
+RUN  mv ./node_modules ./jibber-jabber-ui
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+RUN npm run build
 
 WORKDIR /jibber-jabber-ui
 
